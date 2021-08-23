@@ -1,7 +1,7 @@
-load --library /mnt/c/nasm/myexpos/expl/library.lib
-load --int=10 /mnt/c/nasm/myexpos/spl/spl_progs/haltprog.xsm
-load --exhandler /mnt/c/nasm/myexpos/spl/spl_progs/haltprog.xsm
-load --int=timer /mnt/c/nasm/myexpos/spl/spl_progs/int_timer.xsm
-load --int=7 /mnt/c/nasm/myexpos/spl/spl_progs/int_7.xsm
-load --init /mnt/c/nasm/myexpos/expl/expl_progs/print_20nums_consol_op.xsm
-load --os /mnt/c/nasm/myexpos/spl/spl_progs/os_startup_console.xsm
+load --library /home/saimineesh/myexpos/expl/library.lib
+load --int=10 /home/saimineesh/myexpos/spl/spl_progs/haltprog.xsm
+load --exhandler /home/saimineesh/myexpos/spl/spl_progs/haltprog.xsm
+load --int=timer /home/saimineesh/myexpos/spl/spl_progs/scheduler.xsm
+load --int=7 /home/saimineesh/myexpos/spl/spl_progs/int_7.xsm
+load --init /home/saimineesh/myexpos/expl/expl_progs/print_50.xsm
+load --os /home/saimineesh/myexpos/spl/spl_progs/os_startup_12.xsm
