@@ -1,0 +1,47 @@
+[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+13]=SP;
+SP=[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+11]*512-1;
+backup;
+
+alias current_pid R0;
+current_pid=[SYSTEM_STATUS_TABLE+1];
+
+alias process_table_entry R1;
+process_table_entry=PROCESS_TABLE+(current_pid*16);
+
+[process_table_entry+12]=SP%512;
+[process_table_entry+14]=PTBR;
+[process_table_entry+15]=PTLR;
+[process_table_entry+4]=READY;
+
+alias new_pid R2;
+
+if(current_pid==1)	then
+	new_pid=0;
+else
+	new_pid=1;
+endif;
+
+alias new_process_entry R3;
+new_process_entry=PROCESS_TABLE+(new_pid*16);
+
+SP=[new_process_entry+11]*512+[new_process_entry+12];
+PTBR=[new_process_entry+14];
+PTLR=[new_process_entry+15];
+
+[SYSTEM_STATUS_TABLE+1]=new_pid;
+
+if([new_process_entry+4]==CREATED)	then
+	SP=[new_process_entry+13];
+	[new_process_entry+4]=RUNNING;
+	ireturn;
+endif;
+
+[new_process_entry+4]=RUNNING;
+
+SP=[new_process_entry+13];
+restore;
+ireturn;
+	
+	
+	
+	
