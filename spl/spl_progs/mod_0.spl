@@ -1,0 +1,34 @@
+alias funct_num R1;
+alias current_pid R2;
+
+if( funct_num == 8 )	then
+	while( [TERMINAL_STATUS_TABLE] == 1)	do
+		[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+4]=WAIT_TERMINAL;
+		multipush(R1,R2);
+		call MOD_5;
+		multipop(R1,R2);
+	endwhile;
+	[TERMINAL_STATUS_TABLE]=1;
+	[TERMINAL_STATUS_TABLE+1]=current_pid;
+	return ;
+endif;
+
+if( funct_num == 9 )	then
+	if( current_pid == [TERMINAL_STATUS_TABLE+1])	then
+		[TERMINAL_STATUS_TABLE]=0;
+		alias pid R3;
+		pid=0;
+		while( pid <= 15 )	do
+			if( [PROCESS_TABLE+(pid*16)+4] == WAIT_TERMINAL )	then
+				[PROCESS_TABLE+(pid*16)+4] = READY;
+			endif;
+			pid=pid+1;
+		endwhile;
+		
+		R0=0;
+		return ;
+	else
+		R0=-1;
+		return ;
+	endif;
+endif;
