@@ -1,0 +1,8 @@
+load --library /mnt/c/nasm/myexpos/expl/library.lib
+load --int=10 /mnt/c/nasm/myexpos/spl/spl_progs/haltprog_1.xsm
+load --exhandler /mnt/c/nasm/myexpos/spl/spl_progs/haltprog_1.xsm
+load --int=timer /mnt/c/nasm/myexpos/spl/spl_progs/timer_scheduler.xsm
+load --int=7 /mnt/c/nasm/myexpos/spl/spl_progs/int_7.xsm
+load --init /mnt/c/nasm/myexpos/expl/expl_progs/prog1_init.xsm
+load --idle /mnt/c/nasm/myexpos/expl/expl_progs/idle_1.xsm
+load --os /mnt/c/nasm/myexpos/spl/spl_progs/os_startup_2process.xsm

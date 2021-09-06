@@ -1,0 +1,29 @@
+int main(){
+    decl
+        int a;
+        int b;
+        int c;
+        int rt;
+    enddecl
+    begin
+        rt=exposcall("Write",-2,"prime");
+        a=2;
+        while(a<=100)   do
+            b=2;
+            c=b*b;
+            while(c<=a) do
+                rt=a%b;
+                if(rt==0)  then
+                    break;
+                endif;
+                b=b+1;
+                c=b*b;
+            endwhile;
+            if(c>a) then
+                rt=exposcall("Write",-2,a);
+            endif;
+            a=a+1;
+        endwhile;
+        return 0;
+    end
+}

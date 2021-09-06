@@ -1,0 +1,15 @@
+int main(){
+    decl
+        int odd;
+        int rt;
+    enddecl
+    begin
+        rt=exposcall("Write",-2,"odd");
+        odd=1;
+        while(odd<=100) do
+            rt=exposcall("Write",-2,odd);
+            odd=odd+2;
+        endwhile;
+        return 0;
+    end
+}

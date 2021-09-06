@@ -1,7 +1,12 @@
-load --library /home/saimineesh/myexpos/expl/library.lib
-load --int=10 /home/saimineesh/myexpos/spl/spl_progs/haltprog.xsm
-load --exhandler /home/saimineesh/myexpos/spl/spl_progs/haltprog.xsm
-load --int=timer /home/saimineesh/myexpos/spl/spl_progs/scheduler.xsm
-load --int=7 /home/saimineesh/myexpos/spl/spl_progs/int_7.xsm
-load --init /home/saimineesh/myexpos/expl/expl_progs/print_50.xsm
-load --os /home/saimineesh/myexpos/spl/spl_progs/os_startup_12.xsm
+load --library /mnt/c/nasm/myexpos/expl/library.lib
+load --int=10 /mnt/c/nasm/myexpos/spl/spl_progs/haltprog.xsm
+load --module 7 /mnt/c/nasm/myexpos/spl/spl_progs/mod7.xsm
+load --module 5 /mnt/c/nasm/myexpos/spl/spl_progs/mod_5.xsm
+load --exhandler /mnt/c/nasm/myexpos/spl/spl_progs/haltprog.xsm
+load --int=timer /mnt/c/nasm/myexpos/spl/spl_progs/timer_13.xsm
+load --int=7 /mnt/c/nasm/myexpos/spl/spl_progs/int_7.xsm
+load --init /mnt/c/nasm/myexpos/expl/expl_progs/prog1_init.xsm
+load --exec /mnt/c/nasm/myexpos/expl/expl_progs/prog2.xsm
+load --exec /mnt/c/nasm/myexpos/expl/expl_progs/prog3.xsm
+load --idle /mnt/c/nasm/myexpos/expl/expl_progs/idle.xsm
+load --os /mnt/c/nasm/myexpos/spl/spl_progs/os_startup_13.xsm
