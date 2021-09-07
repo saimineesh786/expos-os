@@ -1,0 +1,31 @@
+int main(){
+	decl
+		int a;
+		int b;
+		int rt;
+	enddecl
+	begin
+		rt = exposcall("Write",-2,"Numbers : ");
+		rt = exposcall("Read",-1,a);
+		rt = exposcall("Read",-1,b);
+		if(a < 0)	then
+			a=a * -1;
+		endif;
+		if(b < 0)	then
+			b=b * -1;
+		endif;
+		if(a < b)	then
+			rt = a;
+			a = b;
+			b = rt;
+		endif;
+		while( (a % b) != 0 )	do
+			rt = a;
+			a = b;
+			b = rt % b;
+		endwhile;
+		rt = exposcall("Write",-2,"gcd : ");
+		rt = exposcall("Write",-2,b);
+		return 0;
+	end
+}
