@@ -9,6 +9,7 @@ load --int=timer /home/saimineesh/myexpos/spl/spl_progs/timer_13.xsm
 load --int=console /home/saimineesh/myexpos/spl/spl_progs/console_int.xsm
 load --int=6 /home/saimineesh/myexpos/spl/spl_progs/int_6.xsm
 load --int=7 /home/saimineesh/myexpos/spl/spl_progs/int_7.xsm
-load --init /home/saimineesh/myexpos/expl/expl_progs/read_nums.xsm
+load --init /home/saimineesh/myexpos/expl/expl_progs/sort.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/prog2.xsm
 load --idle /home/saimineesh/myexpos/expl/expl_progs/idle.xsm
 load --os /home/saimineesh/myexpos/spl/spl_progs/os_startup_13.xsm

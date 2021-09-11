@@ -32,7 +32,7 @@ else
 	R3 = word;
 	call MOD_4;
 	multipop(R0,R1,R2,R3,R4,R5);
-
+	
 	alias phy_addr_ret_val R5;
 	phy_addr_ret_val = [PTBR+ 2 * ( (userSP-1) / 512 ) ] * 512 + (userSP - 1)%512;
 	[phy_addr_ret_val] = 0;

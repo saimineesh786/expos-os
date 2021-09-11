@@ -1,0 +1,36 @@
+decl
+	int n,rt,i,j,t;
+	int a[100];
+enddecl
+int main(){
+	begin
+		rt = exposcall("Write",-2,"n : ");
+		rt = exposcall("Read",-1,n);
+		rt = exposcall("Write",-2,"Numbers : ");
+		i = 0;
+		while(i < n)	do
+			rt = exposcall("Read",-1,a[i]);	
+			i = i + 1;
+		endwhile;
+		i = 0;
+		while(i < n)	do
+			j = 0;
+			while(j < (n - i - 1))	do
+				if(a[j] > a[j+1])	then
+					t = a[j];
+					a[j] = a[j+1];
+					a[j+1] = t;
+				endif;
+				j = j + 1;
+			endwhile;
+			i = i + 1;
+		endwhile;
+		i = 0;
+		rt = exposcall("Write",-2,"Sorted Nums : ");
+		while(i < n)	do
+			rt = exposcall("Write",-2,a[i]);
+			i = i + 1;	
+		endwhile;
+		return 0;
+	end
+}

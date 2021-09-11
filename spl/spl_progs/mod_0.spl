@@ -10,6 +10,7 @@ if( funct_num == 8 )	then
 	endwhile;
 	[TERMINAL_STATUS_TABLE]=1;
 	[TERMINAL_STATUS_TABLE+1]=current_pid;
+	breakpoint;
 	return ;
 endif;
 
@@ -26,9 +27,11 @@ if( funct_num == 9 )	then
 		endwhile;
 		
 		R0=0;
+		breakpoint;
 		return ;
 	else
 		R0=-1;
+		breakpoint;
 		return ;
 	endif;
 endif;

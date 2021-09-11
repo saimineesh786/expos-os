@@ -19,13 +19,13 @@ int main(){
 			a = b;
 			b = rt;
 		endif;
-		while( (a % b) != 0 )	do
+		while( b != 0 )	do
 			rt = a;
 			a = b;
 			b = rt % b;
 		endwhile;
 		rt = exposcall("Write",-2,"gcd : ");
-		rt = exposcall("Write",-2,b);
+		rt = exposcall("Write",-2,a);
 		return 0;
 	end
 }
