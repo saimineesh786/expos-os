@@ -1,0 +1,38 @@
+[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+9] = 9;
+[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+13] = SP;
+
+alias userSP R0;
+userSP = SP;
+
+SP = [PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+11] * 512 - 1;
+  
+alias file_name R1;
+file_name = [[PTBR + (2 * ((userSP - 4)/512))] * 512 + (userSP - 4) % 512];
+alias index R2;
+index = 0;
+
+while(index < 60)	do
+	if([INODE_TABLE + (index * 16) + 1] == file_name)	then
+		if([INODE_TABLE + (index * 16)] == 0)	then
+			break;
+		endif;
+	endif;
+endwhile;
+
+if(index < 60)	then
+	multipush(R0,R1,R2);
+	R1 = 3;
+	R2 = [SYSTEM_STATUS_TABLE + 1];
+	call MOD_1;
+	multipop(R0,R1,R2);
+	alias user_area_page_num R3;
+	[MEMORY_FREE_LIST + user_area_page_num] = [MEMORY_FREE_LIST + user_area_page_num] + 1;
+	[SYSTEM_STATUS_TABLE + 2] = [SYSTEM_STATUS_TABLE + 2] - 1;
+	 
+else
+	[[PTBR + (2 * ((userSP - 1)/512))] * 512 + (userSP - 1)%512] = -1;
+endif;
+
+SP = [PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+13];
+[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+9] = 0;
+ireturn; 
