@@ -5,7 +5,7 @@ multipush(R0);
 alias counter R0;
 counter=1;
 while(counter<=15)  do
-    if([PROCESS_TABLE+(counter*16)+4]==CREATED||[PROCESS_TABLE+(counter*16)+4]==READY||[PROCESS_TABLE+(counter*16)+4]==WAIT_TERMINAL)  then
+    if([PROCESS_TABLE+(counter*16)+4]==CREATED||[PROCESS_TABLE+(counter*16)+4]==READY||[PROCESS_TABLE+(counter*16)+4]==WAIT_TERMINAL||[PROCESS_TABLE+(counter*16)+4]==WAIT_MEM)  then
         break;
     endif;
     counter=counter+1;

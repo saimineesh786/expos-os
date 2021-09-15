@@ -1,6 +1,9 @@
+fdisk
 load --library /home/saimineesh/myexpos/expl/library.lib
 load --int=10 /home/saimineesh/myexpos/spl/spl_progs/haltprog.xsm
 load --module 0 /home/saimineesh/myexpos/spl/spl_progs/mod_0.xsm
+load --module 1 /home/saimineesh/myexpos/spl/spl_progs/mod_1.xsm
+load --module 2 /home/saimineesh/myexpos/spl/spl_progs/mod_2.xsm
 load --module 4 /home/saimineesh/myexpos/spl/spl_progs/mod_4.xsm
 load --module 5 /home/saimineesh/myexpos/spl/spl_progs/mod_5.xsm
 load --module 7 /home/saimineesh/myexpos/spl/spl_progs/mod_7.xsm
@@ -9,7 +12,9 @@ load --int=timer /home/saimineesh/myexpos/spl/spl_progs/timer_13.xsm
 load --int=console /home/saimineesh/myexpos/spl/spl_progs/console_int.xsm
 load --int=6 /home/saimineesh/myexpos/spl/spl_progs/int_6.xsm
 load --int=7 /home/saimineesh/myexpos/spl/spl_progs/int_7.xsm
-load --init /home/saimineesh/myexpos/expl/expl_progs/sort.xsm
-load --exec /home/saimineesh/myexpos/expl/expl_progs/prog2.xsm
+load --int=9 /home/saimineesh/myexpos/spl/spl_progs/int_9.xsm
+load --init /home/saimineesh/myexpos/expl/expl_progs/prog_loader.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/odd.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/gcd.xsm
 load --idle /home/saimineesh/myexpos/expl/expl_progs/idle.xsm
 load --os /home/saimineesh/myexpos/spl/spl_progs/os_startup_13.xsm
