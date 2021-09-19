@@ -9,6 +9,7 @@ if( funct_num == 2 )	then
 	R2 = current_pid;
 	call MOD_0;
 	multipop(R1,R2,R3,R4);
+	breakpoint;
 	[DISK_STATUS_TABLE + 1] = 0;
 	[DISK_STATUS_TABLE + 2] = phy_page_num;
 	[DISK_STATUS_TABLE + 3] = disk_block_num;
