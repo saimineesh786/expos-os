@@ -7,7 +7,7 @@ int main(){
 		ret = exposcall("Write",-2,"File Name : ");
 		ret = exposcall("Read",-1,filename);
 		ret = exposcall("Exec",filename);
-		ret = exposcall("Write",-2,"leave");
+		ret = exposcall("Write",-2,filename);
 		return 0;
 	end
 }

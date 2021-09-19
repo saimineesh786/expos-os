@@ -22,12 +22,6 @@ loadi(23,36);
 loadi(2,15);
 loadi(3,16);
 
-//prog-2
-loadi(83,69);
-
-//prog-3
-loadi(90,70);
-
 //mod=5
 loadi(50,63);
 loadi(51,64);
@@ -63,18 +57,10 @@ loadi(45,58);
 //inode-table
 loadi(59,3);
 loadi(60,4);
-alias i1 R1;
-i1 = 0;
-while(i1 < 128)   do
-	if(i1 < 76)	then
-		[MEMORY_FREE_LIST + i1] = 1;
-	else
-		[MEMORY_FREE_LIST + i1] = 0;
-	endif;
-	i1 = i1 + 1;
-endwhile;
 
-[TERMINAL_STATUS_TABLE]=0;
+//int=disk
+loadi(19,6);
+loadi(20,7);
 
 PTBR = PAGE_TABLE_BASE+20;
 
@@ -124,7 +110,34 @@ PTBR = PAGE_TABLE_BASE+20;
 
 [SYSTEM_STATUS_TABLE + 3] = 0;
 [SYSTEM_STATUS_TABLE + 2] = 45;
+[DISK_STATUS_TABLE] = 0;
+[TERMINAL_STATUS_TABLE]=0;
 
+alias i R1;
+i = 0;
+while(i < 128)   do
+	if(i < 76)	then
+		[MEMORY_FREE_LIST + i] = 1;
+	else
+		[MEMORY_FREE_LIST + i] = 0;
+	endif;
+	i = i + 1;
+endwhile;
+
+alias i1 R0;
+alias base R1;
+alias j R2;
+j = 0;
+while(j <= 1)	do
+	base = ([PROCESS_TABLE+(j * 16)+11] + 1) * 512;
+	i1 = 16;
+	while(i1 > 0)	do	
+		[base - i1] = -1;
+		i1 = i1 - 1;
+	endwhile;
+	j = j + 1;
+endwhile;
+	
 alias counter R0;
 counter=2;
 while(counter<=15)  do

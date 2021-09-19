@@ -1,9 +1,21 @@
 alias funct_num R1;
 alias current_pid R2;
 
+if(funct_num == 3)	then
+	while([DISK_STATUS_TABLE + 0] == 1)	do
+		[PROCESS_TABLE+(current_pid*16)+4]=WAIT_DISK;
+		multipush(R1,R2);
+		call MOD_5;
+		multipop(R1,R2);
+	endwhile;
+	[DISK_STATUS_TABLE + 0] = 1;
+	[DISK_STATUS_TABLE + 4] = current_pid;
+	return;
+endif;
+
 if( funct_num == 8 )	then
 	while( [TERMINAL_STATUS_TABLE] == 1)	do
-		[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+4]=WAIT_TERMINAL;
+		[PROCESS_TABLE+(current_pid*16)+4]=WAIT_TERMINAL;
 		multipush(R1,R2);
 		call MOD_5;
 		multipop(R1,R2);

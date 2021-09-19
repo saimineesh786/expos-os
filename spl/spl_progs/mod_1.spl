@@ -2,17 +2,17 @@ alias funct_num R1;
 alias current_pid R2;
 
 if(funct_num == 3)	then
-	multipush(R0,R1,R2);
+	multipush(R1,R2);
 	R1 = 4;
 	R2 = current_pid;
 	call MOD_1;
-	multipop(R0,R1,R2);
+	multipop(R1,R2);
 	
-	multipush(R0,R1,R2);
+	multipush(R1,R2);
 	R1 = 2;
 	R2 = current_pid;
 	call MOD_1;
-	multipop(R0,R1,R2);
+	multipop(R1,R2);
 	
 	[PROCESS_TABLE + (current_pid * 16) + 4] = TERMINATED;
 	return;
