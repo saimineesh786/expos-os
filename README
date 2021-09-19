@@ -1,0 +1,7 @@
+check ---- haltprog.spl
+mod 0 ---- resource manager
+mod 1 ---- process manager
+mod 2 ---- memory manager
+mod 4 ---- device manager
+mod 5 ---- scheduler
+mod 7 ---- boot module

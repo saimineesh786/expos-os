@@ -10,7 +10,6 @@ process_table_entry = PROCESS_TABLE + req_pid * 16;
 
 breakpoint;
 [process_table_entry+8] = P0;
-[process_table_entry+9]=RUNNING;
 breakpoint;
 
 multipush(R0,R1);

@@ -5,13 +5,12 @@ if(funct_num == 1)	then
 	breakpoint;
 	while([SYSTEM_STATUS_TABLE + 2] == 0)	do
 		[PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1] * 16) + 4] = WAIT_MEM;
-		multipush(R0,R1,R2);
+		multipush(R0,R1);
 		call MOD_5;
-		multipop(R0,R1,R2);
+		multipop(R0,R1);
 	endwhile;
 	[SYSTEM_STATUS_TABLE + 3] = [SYSTEM_STATUS_TABLE + 3] - 1;
 	[SYSTEM_STATUS_TABLE + 2] = [SYSTEM_STATUS_TABLE + 2] - 1;
-	breakpoint;
 	alias i1 R2;
 	i1 = 76;
 	while((i1 < 128) && ([MEMORY_FREE_LIST + i1] != 0))	do
@@ -24,6 +23,7 @@ endif;
 if(funct_num == 2)	then
 	alias page_num R2;
 	[MEMORY_FREE_LIST + page_num] = [MEMORY_FREE_LIST + page_num] - 1;
+	breakpoint;
 	if([MEMORY_FREE_LIST + page_num] == 0)	then
 		[SYSTEM_STATUS_TABLE + 2] = [SYSTEM_STATUS_TABLE + 2] + 1;
 		alias i1 R3;

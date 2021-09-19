@@ -6,6 +6,7 @@ if( funct_num == 2 )	then
 	alias disk_block_num R4;
 	multipush(R1,R2,R3,R4);
 	R1 = 3;
+	R2 = current_pid;
 	call MOD_0;
 	multipop(R1,R2,R3,R4);
 	[DISK_STATUS_TABLE + 1] = 0;
@@ -30,7 +31,6 @@ if ( funct_num == 3 )	then
 	R2=[SYSTEM_STATUS_TABLE+1];
 	call MOD_0;
 	multipop(R1,R2,R3);
-	return ;
 endif;
 
 if( funct_num == 4 )	then
@@ -46,8 +46,6 @@ if( funct_num == 4 )	then
 	multipop(R1,R2,R3);
 	alias word R3;
 	[[PTBR+(2*(word/512))]*512+(word%512)] = [PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+8];
-	return ;
 endif;
-
-R0=-1;
+breakpoint;
 return ;
