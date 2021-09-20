@@ -1,6 +1,6 @@
 fdisk
 load --library /home/saimineesh/myexpos/expl/library.lib
-load --exhandler /home/saimineesh/myexpos/spl/spl_progs/haltprog.xsm
+load --exhandler /home/saimineesh/myexpos/spl/spl_progs/ex_handler.xsm
 load --module 0 /home/saimineesh/myexpos/spl/spl_progs/mod_0.xsm
 load --module 1 /home/saimineesh/myexpos/spl/spl_progs/mod_1.xsm
 load --module 2 /home/saimineesh/myexpos/spl/spl_progs/mod_2.xsm
@@ -15,7 +15,6 @@ load --int=7 /home/saimineesh/myexpos/spl/spl_progs/int_7.xsm
 load --int=9 /home/saimineesh/myexpos/spl/spl_progs/int_9.xsm
 load --int=10 /home/saimineesh/myexpos/spl/spl_progs/haltprog.xsm
 load --init /home/saimineesh/myexpos/expl/expl_progs/prog_loader.xsm
-load --exec /home/saimineesh/myexpos/expl/expl_progs/odd.xsm
-load --exec /home/saimineesh/myexpos/expl/expl_progs/gcd.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/list.xsm
 load --idle /home/saimineesh/myexpos/expl/expl_progs/idle.xsm
 load --os /home/saimineesh/myexpos/spl/spl_progs/os_startup_13.xsm

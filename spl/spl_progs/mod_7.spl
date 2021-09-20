@@ -62,6 +62,9 @@ loadi(60,4);
 loadi(6,19);
 loadi(7,20);
 
+//disk-free-list
+loadi(61,2);
+
 alias i R1;
 i = 0;
 while(i < 128)   do
@@ -82,17 +85,17 @@ PTBR = PAGE_TABLE_BASE+20;
 [MEMORY_FREE_LIST + 64] = 2;
 [PTBR+3] = "0100";
 
-[PTBR+4] = 76;
+[PTBR+4] = -1;
 [MEMORY_FREE_LIST + 76] = 1;
-[PTBR+5] = "0110";
-[PTBR+6] = 77;
+[PTBR+5] = "0000";
+[PTBR+6] = -1;
 [MEMORY_FREE_LIST + 77] = 1;
-[PTBR+7] = "0110";
+[PTBR+7] = "0000";
 
 [PTBR+8] = 65;
 [PTBR+9] = "0100";
-[PTBR+10] = 66;
-[PTBR+11] = "0100";
+[PTBR+10] = -1;
+[PTBR+11] = "0000";
 [PTBR+12] = -1;
 [PTBR+13] = "0000";
 [PTBR+14] = -1;
@@ -145,4 +148,15 @@ while(counter<=15)  do
     [PROCESS_TABLE+(counter*16)+4]=TERMINATED;
     counter=counter+1;
 endwhile;
+
+counter = 0;
+while(counter < 10)	do
+	[DISK_MAP_TABLE + counter] = -1;
+	[DISK_MAP_TABLE + 10 + counter] = -1;
+	counter = counter + 1;
+endwhile;
+[DISK_MAP_TABLE + 4] = 11;
+[DISK_MAP_TABLE + 5] = 12;
+[DISK_MAP_TABLE + 10 + 4] = 7;
+[DISK_MAP_TABLE + 10 + 5] = 8;
 return;

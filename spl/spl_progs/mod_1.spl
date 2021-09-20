@@ -45,6 +45,19 @@ if(funct_num == 4)	then
 		[page_table_base+i1+1] = "0000";
 		i1 = i1 + 2;
 	endwhile;
+	i1 = 0;
+	while(i1 < 10)	do
+		if(([DISK_MAP_TABLE + (current_pid * 16) + i1] != -1)&&((i1 < 4)&&(i1 > 7)))	then
+			multipush(R1,R2,R3,R4);
+			R1 = 4;
+			R3 = current_pid;
+			R2 = [DISK_MAP_TABLE + (current_pid * 16) + i1];
+			call MOD_2;
+			multipop(R1,R2,R3,R4);
+		endif;
+		[DISK_MAP_TABLE + (current_pid * 16) + i1] = -1;
+		i1 = i1 + 1;
+	endwhile;
 endif;
 breakpoint;
 return;
