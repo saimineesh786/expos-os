@@ -28,7 +28,7 @@ if((EC == 1) || (EC == 2) || (EC == 3) ||([PROCESS_TABLE + ([SYSTEM_STATUS_TABLE
 	call MOD_1;
 	multipop(EIP,EC,EPN,EMA);
 	multipush(EIP,EC,EPN,EMA);
-	call INT_10;
+	call MOD_5;
 	multipop(EIP,EC,EPN,EMA);
 endif;
 

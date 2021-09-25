@@ -1,6 +1,24 @@
 alias funct_num R1;
 alias current_pid R2;
 
+if(funct_num==1)	then
+	alias index R3;
+	index=0;
+	while(index<16)	do
+		if([PROCESS_TABLE+(index*16)+4]==TERMINATED)	then
+			[PROCESS_TABLE+(index*16)+1]=index;
+			[PROCESS_TABLE+(index*16)+4]=ALLOCATED;
+			[PROCESS_TABLE+(index*16)+14]=PAGE_TABLE_BASE+(index*20);
+			[PROCESS_TABLE+(index*16)+15]=10;
+			R0=index;
+			return;
+		endif;
+		index=index+1;
+	endwhile;		
+	R0=-1;
+	return;
+endif;
+	
 if(funct_num == 3)	then
 	multipush(R1,R2);
 	R1 = 4;

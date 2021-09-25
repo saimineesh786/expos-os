@@ -10,10 +10,6 @@ int main(){
         while(odd<=100) do
             rt=exposcall("Write",-2,odd);
             odd=odd+2;
-            if(odd == 51)	then
-            	rt = exposcall("Read",-1,fname);
-            	rt = exposcall("Exec",fname);
-            endif;
         endwhile;
         return 0;
     end

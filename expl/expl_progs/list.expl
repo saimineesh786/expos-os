@@ -13,6 +13,7 @@ enddecl
 int main(){
 	decl
 		int n,rt,k;
+		str fname;
 		node z,prev;
 	enddecl
 	begin
@@ -43,6 +44,8 @@ int main(){
 			z = z.next;
 		endwhile;
 		rt = exposcall("Write",-2,"null");
+		rt = exposcall("Read",-1,fname);
+		rt = exposcall("Exec",fname);
 		return 1;	
 	end
 }

@@ -65,6 +65,10 @@ loadi(7,20);
 //disk-free-list
 loadi(61,2);
 
+//int=8
+loadi(18,31);
+loadi(19,32);
+
 alias i R1;
 i = 0;
 while(i < 128)   do

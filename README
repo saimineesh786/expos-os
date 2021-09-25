@@ -4,6 +4,7 @@ mod 0 ---- resource manager
 	-- 8 . Acquire Terminal
 	-- 9 . Release Terminal
 mod 1 ---- process manager
+	-- 1 . Get PCB Entry
 	-- 2 . Free User Page
 	-- 3 . Exit Process
 	-- 4 . Free Page Table
@@ -24,9 +25,11 @@ int 6
 	-- read syscall	
 int 7	
 	-- write syscall
+int 8
+	-- fork syscall
 int 9 
 	-- exec syscall
 int 10
-	-- halt syscall
+	-- exit syscall
 Note -- Never Mess Idle It shall be Only Infinite Loop No reads , No prints && No heap.
 	 XSM machine disables interrupts when executing in the kernel mode. Hence, the disk controller can raise an interrupt only when the machine is executing in the user mode. Hence the OS has to schedule "some process" even if all processess are waiting for disk/terminal interrupt - for otherwise, the device concerned will never be able to interrupt the processor. The IDLE process is precisely designed to take care of this and other similar situations. 

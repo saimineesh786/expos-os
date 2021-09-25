@@ -1,0 +1,16 @@
+int main(){
+	decl
+		int rt;
+	enddecl
+	begin
+	rt=exposcall("Fork");
+	if(rt==0)	then
+		rt=exposcall("Write",-2,"Child");
+		rt=exposcall("Exec","odd.xsm");
+	else
+		rt=exposcall("Write",-2,"Parent");
+		rt=exposcall("Exec","prog2.xsm");
+	endif;
+	return 0;
+	end
+}

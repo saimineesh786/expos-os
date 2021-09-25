@@ -12,9 +12,11 @@ load --int=console /home/saimineesh/myexpos/spl/spl_progs/console_int.xsm
 load --int=disk /home/saimineesh/myexpos/spl/spl_progs/disk_interrupt.xsm
 load --int=6 /home/saimineesh/myexpos/spl/spl_progs/int_6.xsm
 load --int=7 /home/saimineesh/myexpos/spl/spl_progs/int_7.xsm
+load --int=8 /home/saimineesh/myexpos/spl/spl_progs/int_8.xsm
 load --int=9 /home/saimineesh/myexpos/spl/spl_progs/int_9.xsm
-load --int=10 /home/saimineesh/myexpos/spl/spl_progs/haltprog.xsm
-load --init /home/saimineesh/myexpos/expl/expl_progs/prog_loader.xsm
-load --exec /home/saimineesh/myexpos/expl/expl_progs/list.xsm
+load --int=10 /home/saimineesh/myexpos/spl/spl_progs/int_10.xsm
+load --init /home/saimineesh/myexpos/expl/expl_progs/init_20.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/odd.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/prog2.xsm
 load --idle /home/saimineesh/myexpos/expl/expl_progs/idle.xsm
 load --os /home/saimineesh/myexpos/spl/spl_progs/os_startup_13.xsm
