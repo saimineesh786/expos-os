@@ -65,7 +65,7 @@ if(funct_num == 4)	then
 	endwhile;
 	i1 = 0;
 	while(i1 < 10)	do
-		if(([DISK_MAP_TABLE + (current_pid * 16) + i1] != -1)&&((i1 < 4)&&(i1 > 7)))	then
+		if(([DISK_MAP_TABLE + (current_pid * 10) + i1] != -1)&&((i1 < 4)&&(i1 > 7)))	then
 			multipush(R1,R2,R3,R4);
 			R1 = 4;
 			R3 = current_pid;
@@ -73,7 +73,7 @@ if(funct_num == 4)	then
 			call MOD_2;
 			multipop(R1,R2,R3,R4);
 		endif;
-		[DISK_MAP_TABLE + (current_pid * 16) + i1] = -1;
+		[DISK_MAP_TABLE + (current_pid * 10) + i1] = -1;
 		i1 = i1 + 1;
 	endwhile;
 endif;

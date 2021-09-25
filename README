@@ -1,4 +1,3 @@
-check ---- haltprog.spl
 mod 0 ---- resource manager
 	-- 3 . Acquire Disk
 	-- 8 . Acquire Terminal
