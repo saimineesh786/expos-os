@@ -15,8 +15,14 @@ load --int=7 /home/saimineesh/myexpos/spl/spl_progs/int_7.xsm
 load --int=8 /home/saimineesh/myexpos/spl/spl_progs/int_8.xsm
 load --int=9 /home/saimineesh/myexpos/spl/spl_progs/int_9.xsm
 load --int=10 /home/saimineesh/myexpos/spl/spl_progs/int_10.xsm
-load --init /home/saimineesh/myexpos/expl/expl_progs/init_20.xsm
+load --int=11 /home/saimineesh/myexpos/spl/spl_progs/int_11.xsm
+load --int=15 /home/saimineesh/myexpos/spl/spl_progs/int_15.xsm
+load --init /home/saimineesh/myexpos/expl/expl_progs/shell.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/odd.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/prog2.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/gcd.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/sort.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/list.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/prog3.xsm
 load --idle /home/saimineesh/myexpos/expl/expl_progs/idle.xsm
 load --os /home/saimineesh/myexpos/spl/spl_progs/os_startup_13.xsm

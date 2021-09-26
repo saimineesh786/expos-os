@@ -19,7 +19,7 @@ mod 4 ---- device manager
 mod 5 ---- scheduler
 	-- scheduler if a process goes to Wait state or Timer Interrupt
 mod 7 ---- boot module
-	-- loads and links Init code, initalize Data structures Process Table, Page Table, Disk Status Table, Disk Map 		Table,Per Process Table,Memory Free List, Terminal Status Table and System Status Table.
+	-- loads and links Init code, initalize Data structures Process Table, Page Table, Disk Status Table, Disk Map 		   Table,Per Process Table,Memory Free List, Terminal Status Table and System Status Table.
 int 6   
 	-- read syscall	
 int 7	
@@ -30,5 +30,12 @@ int 9
 	-- exec syscall
 int 10
 	-- exit syscall
+int 11
+	-- Wait syscall
+	-- Signal syscall
+	-- get_pid syscall
+	-- get_ppid syscall
+int 15
+	-- shutdown syscall
 Note -- Never Mess Idle It shall be Only Infinite Loop No reads , No prints && No heap.
 	 XSM machine disables interrupts when executing in the kernel mode. Hence, the disk controller can raise an interrupt only when the machine is executing in the user mode. Hence the OS has to schedule "some process" even if all processess are waiting for disk/terminal interrupt - for otherwise, the device concerned will never be able to interrupt the processor. The IDLE process is precisely designed to take care of this and other similar situations. 
