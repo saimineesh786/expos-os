@@ -29,6 +29,7 @@ begin
             break;
         endif;
     endwhile;
+    temp = exposcall("Shutdown");
     return 0;
 end
 }

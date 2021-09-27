@@ -24,5 +24,7 @@ load --exec /home/saimineesh/myexpos/expl/expl_progs/gcd.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/sort.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/list.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/prog3.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/fork3.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/pid.xsm
 load --idle /home/saimineesh/myexpos/expl/expl_progs/idle.xsm
 load --os /home/saimineesh/myexpos/spl/spl_progs/os_startup_13.xsm
