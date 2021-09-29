@@ -37,7 +37,6 @@ endif;
 if(new_pid==-1) then
     new_pid=0;
 endif;
-
 [SYSTEM_STATUS_TABLE+1]=new_pid;
 PTBR=[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+14];
 PTLR=[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+15];

@@ -40,5 +40,4 @@ if( funct_num == 9 )	then
 		R0=-1;
 	endif;
 endif;
-breakpoint;
 return;

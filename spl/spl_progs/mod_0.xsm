@@ -107,6 +107,5 @@ _L12:
 JMP _L10
 _L9:
 _L10:
-BRKP
 RET
 HALT

@@ -2,12 +2,11 @@ alias funct_num R1;
 
 if(funct_num == 1)	then
 	[SYSTEM_STATUS_TABLE + 3] = [SYSTEM_STATUS_TABLE + 3] + 1;
-	breakpoint;
 	while([SYSTEM_STATUS_TABLE + 2] == 0)	do
 		[PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1] * 16) + 4] = WAIT_MEM;
-		multipush(R0,R1);
+		multipush(R1);
 		call MOD_5;
-		multipop(R0,R1);
+		multipop(R1);
 	endwhile;
 	[SYSTEM_STATUS_TABLE + 3] = [SYSTEM_STATUS_TABLE + 3] - 1;
 	[SYSTEM_STATUS_TABLE + 2] = [SYSTEM_STATUS_TABLE + 2] - 1;
@@ -23,7 +22,6 @@ endif;
 if(funct_num == 2)	then
 	alias page_num R2;
 	[MEMORY_FREE_LIST + page_num] = [MEMORY_FREE_LIST + page_num] - 1;
-	breakpoint;
 	if([MEMORY_FREE_LIST + page_num] == 0)	then
 		[SYSTEM_STATUS_TABLE + 2] = [SYSTEM_STATUS_TABLE + 2] + 1;
 		alias i1 R3;
@@ -48,17 +46,23 @@ if(funct_num == 5)	then
 	alias current_pid R3;
 	alias i2 R4;
 	i2 = 0;
-	while((i2 < 160) && ([DISK_MAP_TABLE + i2] != disk_block_num))	do
+	while(i2 < 160)	do
+		if(((i2%10)>3)&&((i2%10)<8))	then
+			if([DISK_MAP_TABLE+i2]==disk_block_num)	then
+				break;
+			endif;
+		endif;
 		i2 = i2 + 1;
 	endwhile; 
 	if(i2 < 160)	then
 		alias pno R5;
 		alias met_data R6;
 		pno = i2 / 10;
-		met_data = [PROCESS_TABLE + (pno * 16) + (2 * (i2 % 16)) + 1];
-		if(met_data == "0100"||met_data == "0101"||met_data == "0110"||met_data == "0111"||met_data == "1100"||met_data == "1101"||met_data == "1110"||met_data == "1111")	then
-			[MEMORY_FREE_LIST + i2] = [MEMORY_FREE_LIST + i2] + 1;
-			R0 = i2;
+		met_data = [PAGE_TABLE_BASE + (pno * 20) + (2 * (i2 % 10)) + 1];
+		if(([PAGE_TABLE_BASE + (pno * 20) + (2 * (i2 % 10))] != -1)&&((met_data == "0100")||(met_data == "0101")||(met_data == "0110")||(met_data == "0111")||(met_data == "1100")||(met_data == "1101")||(met_data == "1110")||(met_data == "1111")))	then
+			R7=[PAGE_TABLE_BASE+(pno*20)+(2*(i2 % 10))];
+			[MEMORY_FREE_LIST+R7] = [MEMORY_FREE_LIST+R7] + 1;
+			R0 = R7;
 			return;
 		endif; 
 	endif;
@@ -79,5 +83,4 @@ if(funct_num == 5)	then
 	multipop(R0);
 endif;
 
-breakpoint;
 return;
