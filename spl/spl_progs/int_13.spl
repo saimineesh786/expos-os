@@ -1,0 +1,60 @@
+alias syscallnum R1;
+alias userSP R0;
+userSP=SP;
+syscallnum=[([PTBR+(2*((userSP-5)/512))]*512)+(userSP-5)%512];
+[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+9]=syscallnum;
+[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+13] = SP;
+SP=([PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+11]*512)-1;
+if(syscallnum==17)	then
+	alias base R2;
+	base=([PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+11]+1)*512;
+	alias index R3;
+	index=16;
+	while(index>0)	do
+		if([base-index]==-1)	then
+			break;
+		endif;
+		index=index-2;
+	endwhile;
+	if(index>0)	then
+		[base-index]=1;
+		multipush(R0,R1,R2,R3);
+		R1=6;
+		R2=[SYSTEM_STATUS_TABLE+1];
+		call MOD_0;
+		R4=R0;
+		multipop(R0,R1,R2,R3);
+		if(R4>=0)	then
+			[base-index+1]=R4;
+			[([PTBR+(2*((userSP-1)/512))]*512)+(userSP-1)%512]=index;
+		else
+			[([PTBR+(2*((userSP-1)/512))]*512)+(userSP-1)%512]=-2;
+		endif;
+	else
+		[([PTBR+(2*((userSP-1)/512))]*512)+(userSP-1)%512]=-1;
+	endif;
+endif;
+
+if(syscallnum==18)	then
+	alias index R2;
+	index=[([PTBR+(2*((userSP-4)/512))]*512)+(userSP-4)%512];
+	alias base R3;
+	base=([PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+11]+1)*512;
+	if(((index%2)==0)&&(index>0)&&(index<=16)&&([base-index]==1))	then
+		multipush(R0,R1,R2,R3);
+		R1=7;
+		R2=[base-index+1];
+		R3=[SYSTEM_STATUS_TABLE+1];
+		call MOD_0;
+		multipop(R0,R1,R2,R3);
+		[base-index]=-1;
+		[base-index+1]=-1;
+		[([PTBR+(2*((userSP-1)/512))]*512)+(userSP-1)%512]=0;
+	else
+		[([PTBR+(2*((userSP-1)/512))]*512)+(userSP-1)%512]=-1;
+	endif;
+endif;
+
+[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+9]=0;
+SP=[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+13];
+ireturn;

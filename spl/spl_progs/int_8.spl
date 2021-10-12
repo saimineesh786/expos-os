@@ -6,7 +6,7 @@ call MOD_1;
 if(R0==-1)	then
 	alias userSP R1;
 	userSP=[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+13];
-	[PTBR+(2*((userSP-4)/512))+((userSP-4)%512)]=-1;
+	[([PTBR+(2*((userSP-1)/512))]*512)+((userSP-1)%512)]=-1;
 	SP=[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+13];
 	[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+9]=0;
 	ireturn;
@@ -35,7 +35,6 @@ call MOD_2;
 call MOD_2;
 [PROCESS_TABLE+(child_pid*16)+11]=R0;
 multipop(R1,R2,R8);
-breakpoint;
 alias base1 R3;
 alias base2 R4;
 base1=PROCESS_TABLE+(child_pid*16);
@@ -54,6 +53,11 @@ base1=([PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+11]+1)*512;
 base2=([PROCESS_TABLE+(child_pid*16)+11]+1)*512;
 i=16;
 while(i>0)	do
+	if((i%2)==0)	then
+		if([base1-i]==1)	then
+			[SEMAPHORE_TABLE+([base1-i-1]*4)+1]=[SEMAPHORE_TABLE+([base1-i-1]*4)+1]+1;
+		endif;	
+	endif;
 	[base2-i]=[base1-i];
 	i=i-1;
 endwhile;
@@ -100,5 +104,4 @@ base2=[PROCESS_TABLE+(child_pid*16)+13];
 [PROCESS_TABLE+(child_pid*16)+4]=CREATED;
 [PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+9]=0;
 SP=[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+13];
-breakpoint;
 ireturn;	

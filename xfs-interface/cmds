@@ -16,6 +16,8 @@ load --int=8 /home/saimineesh/myexpos/spl/spl_progs/int_8.xsm
 load --int=9 /home/saimineesh/myexpos/spl/spl_progs/int_9.xsm
 load --int=10 /home/saimineesh/myexpos/spl/spl_progs/int_10.xsm
 load --int=11 /home/saimineesh/myexpos/spl/spl_progs/int_11.xsm
+load --int=13 /home/saimineesh/myexpos/spl/spl_progs/int_13.xsm
+load --int=14 /home/saimineesh/myexpos/spl/spl_progs/int_14.xsm
 load --int=15 /home/saimineesh/myexpos/spl/spl_progs/int_15.xsm
 load --init /home/saimineesh/myexpos/expl/expl_progs/shell.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/odd.xsm
@@ -26,6 +28,12 @@ load --exec /home/saimineesh/myexpos/expl/expl_progs/sort.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/list.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/prog3.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/fork3.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/fork3_n.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/s22.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/pid.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/parent.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/mer_sq.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/mer_con.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/child.xsm
 load --idle /home/saimineesh/myexpos/expl/expl_progs/idle.xsm
 load --os /home/saimineesh/myexpos/spl/spl_progs/os_startup_13.xsm

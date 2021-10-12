@@ -9,7 +9,7 @@ SP=([PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+11]*512)-1;
 if(syscallnum==13)	then
 	alias process R2;
 	process=[([PTBR+(2*((userSP-4)/512))]*512)+(userSP-4)%512];
-	if((process!=[SYSTEM_STATUS_TABLE+1])&&([PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+4]!=TERMINATED))	then
+	if((process!=[SYSTEM_STATUS_TABLE+1])&&([PROCESS_TABLE+(process*16)+4]!=TERMINATED)&&(process>=0)&&(process<16))	then
 		[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+4]=WAIT_PROCESS;
 		[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+5]=process;
 		multipush(R0,R1,R2);
@@ -26,8 +26,8 @@ if(syscallnum==14)	then
 	index=0;
 	while(index<16)	do
 		if(([PROCESS_TABLE+(index*16)+4]==WAIT_PROCESS)&&([PROCESS_TABLE+(index*16)+5]==[SYSTEM_STATUS_TABLE+1]))	then
-			[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+4]=READY;
-			[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+5]="";
+			[PROCESS_TABLE+(index*16)+4]=READY;
+			[PROCESS_TABLE+(index*16)+5]="";
 		endif;
 		index=index+1;
 	endwhile;

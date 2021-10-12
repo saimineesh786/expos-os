@@ -1,7 +1,7 @@
 alias funct_num R1;
-alias current_pid R2;
 
 if(funct_num == 3)	then
+	alias current_pid R2;
 	while([DISK_STATUS_TABLE + 0] == 1)	do
 		[PROCESS_TABLE+(current_pid*16)+4]=WAIT_DISK;
 		multipush(R1,R2);
@@ -12,7 +12,50 @@ if(funct_num == 3)	then
 	[DISK_STATUS_TABLE + 4] = current_pid;
 endif;
 
+if(funct_num==6)	then
+	alias current_pid R2;
+	alias index R3;
+	index=0;
+	while(index<32)	do
+		if([SEMAPHORE_TABLE+(index*4)+1]==0)	then
+			break;
+		endif;
+		index=index+1;
+	endwhile;
+	if(index<32)	then
+		[SEMAPHORE_TABLE+(index*4)+1]=1;
+		[SEMAPHORE_TABLE+(index*4)+0]=-1;
+		R0=index;
+	else
+		R0=-1;
+	endif;
+endif;
+
+if(funct_num==7)	then
+	alias semindex R2;
+	alias pid R3;
+	if((semindex>=0)&&(semindex<32))	then
+		if([SEMAPHORE_TABLE+(semindex*4)+0]==pid)	then
+			[SEMAPHORE_TABLE+(semindex*4)+0]=-1;
+			alias index R4;
+			index=0;
+			while(index<16)	do
+				if(([PROCESS_TABLE+(index*16)+4]==WAIT_SEMAPHORE)&&([PROCESS_TABLE+(index*16)+5]==semindex))	then
+					[PROCESS_TABLE+(index*16)+4]=READY;
+					[PROCESS_TABLE+(index*16)+5]="";
+				endif;
+				index=index+1;
+			endwhile;
+		endif;
+		[SEMAPHORE_TABLE+(semindex*4)+1]=[SEMAPHORE_TABLE+(semindex*4)+1]-1;
+		R0=0;
+	else
+		R0=-1;
+	endif;
+endif;
+
 if( funct_num == 8 )	then
+	alias current_pid R2;
 	while( [TERMINAL_STATUS_TABLE + 0] == 1)	do
 		[PROCESS_TABLE+(current_pid*16)+4]=WAIT_TERMINAL;
 		multipush(R1,R2);
@@ -24,6 +67,7 @@ if( funct_num == 8 )	then
 endif;
 
 if( funct_num == 9 )	then
+	alias current_pid R2;
 	if( current_pid == [TERMINAL_STATUS_TABLE+1])	then
 		[TERMINAL_STATUS_TABLE]=0;
 		alias pid R3;
