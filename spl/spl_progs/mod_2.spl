@@ -12,11 +12,16 @@ if(funct_num == 1)	then
 	[SYSTEM_STATUS_TABLE + 2] = [SYSTEM_STATUS_TABLE + 2] - 1;
 	alias i1 R2;
 	i1 = 76;
-	while((i1 < 128) && ([MEMORY_FREE_LIST + i1] != 0))	do
+	while(i1<128)	do
+		if([MEMORY_FREE_LIST+i1]==0)	then
+			break;
+		endif;
 		i1 = i1 + 1;
 	endwhile;
-	[MEMORY_FREE_LIST + i1] = 1;
-	R0 = i1;
+	if(i1<128)	then
+		[MEMORY_FREE_LIST + i1] = 1;
+		R0 = i1;
+	endif;
 endif;
 
 if(funct_num == 2)	then

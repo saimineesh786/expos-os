@@ -1,73 +1,50 @@
-//lib-code
-loadi(63,13);
-loadi(64,14);
-
-//int=7 
-loadi(16,29);
-loadi(17,30);
-
 //int=timer
 loadi(4,17);
 loadi(5,18);
-
-//init-code
-loadi(65,7);
-loadi(66,8);
-
-//int=10
-loadi(22,35);
-loadi(23,36);
-
-//exception
-loadi(2,15);
-loadi(3,16);
-
-//mod=5
-loadi(50,63);
-loadi(51,64);
-
-//mod=0
-loadi(40,53);
-loadi(41,54);
-
-//mod=4
-loadi(48,61);
-loadi(49,62);
-
-//int=console
-loadi(8,21);
-loadi(9,22);
-
-//int=6
-loadi(14,27);
-loadi(15,28);
-
-//int=9
-loadi(20,33);
-loadi(21,34);
-
-//mod=1
-loadi(42,55);
-loadi(43,56);
-
-//mod=2
-loadi(44,57);
-loadi(45,58);
-
-//inode-table
-loadi(59,3);
-loadi(60,4);
 
 //int=disk
 loadi(6,19);
 loadi(7,20);
 
-//disk-free-list
-loadi(61,2);
+//int=console
+loadi(8,21);
+loadi(9,22);
+
+//lib-code
+loadi(63,13);
+loadi(64,14);
+
+//init-code
+loadi(65,7);
+loadi(66,8);
+
+//exception
+loadi(2,15);
+loadi(3,16);
+
+//int=4
+loadi(10,23);
+loadi(11,24);
+
+//int=6
+loadi(14,27);
+loadi(15,28);
+
+//int=7 
+loadi(16,29);
+loadi(17,30);
 
 //int=8
 loadi(18,31);
 loadi(19,32);
+
+//int=9
+loadi(20,33);
+loadi(21,34);
+
+//int=10
+loadi(22,35);
+loadi(23,36);
 
 //int=11
 loadi(24,37);
@@ -84,6 +61,36 @@ loadi(31,44);
 //int=15
 loadi(32,45);
 loadi(33,46);
+
+//mod=0
+loadi(40,53);
+loadi(41,54);
+
+//mod=1
+loadi(42,55);
+loadi(43,56);
+
+//mod=2
+loadi(44,57);
+loadi(45,58);
+
+//mod=4
+loadi(48,61);
+loadi(49,62);
+
+//mod=5
+loadi(50,63);
+loadi(51,64);
+breakpoint;
+//inode-table
+loadi(59,3);
+loadi(60,4);
+//root-file
+loadi(62,5);
+
+//disk-free-list
+loadi(61,2);
+
 alias i R1;
 i = 0;
 while(i < 128)   do
@@ -101,21 +108,16 @@ while(i<32)	do
 	[SEMAPHORE_TABLE+(i*4)+1]=0;
 	i=i+1;
 endwhile;
-
 PTBR = PAGE_TABLE_BASE+20;
 
 [PTBR+0] = 63;
-[MEMORY_FREE_LIST + 63] = 2;
 [PTBR+1] = "0100";
 [PTBR+2] = 64;
-[MEMORY_FREE_LIST + 64] = 2;
 [PTBR+3] = "0100";
 
 [PTBR+4] = -1;
-[MEMORY_FREE_LIST + 76] = 1;
 [PTBR+5] = "0000";
 [PTBR+6] = -1;
-[MEMORY_FREE_LIST + 77] = 1;
 [PTBR+7] = "0000";
 
 [PTBR+8] = 65;
@@ -139,6 +141,7 @@ PTBR = PAGE_TABLE_BASE+20;
 [MEMORY_FREE_LIST + 80] = 1;
 
 [PROCESS_TABLE+16+1]=1;
+[PROCESS_TABLE+16+3]=1;
 [PROCESS_TABLE+16+4]=CREATED;
 [PROCESS_TABLE+16+9]=0;
 [PROCESS_TABLE+16+11]=80;
@@ -150,8 +153,8 @@ PTBR = PAGE_TABLE_BASE+20;
 
 [SYSTEM_STATUS_TABLE + 3] = 0;
 [SYSTEM_STATUS_TABLE + 2] = 45;
-[DISK_STATUS_TABLE] = 0;
-[TERMINAL_STATUS_TABLE]=0;
+[DISK_STATUS_TABLE+0] = 0;
+[TERMINAL_STATUS_TABLE+0]=0;
 
 
 alias i1 R0;
@@ -167,7 +170,23 @@ while(j <= 1)	do
 	endwhile;
 	j = j + 1;
 endwhile;
-	
+
+base=FILE_STATUS_TABLE;
+i1=0;
+while(i1<60)	do
+	[base+(i1*4)+0]=-1;
+	[base+(i1*4)+1]=-1;
+	i1=i1+1;
+endwhile;
+base=BUFFER_TABLE;
+i1=0;
+while(i1<4)	do
+	[base+(i1*4)+0]=-1;
+	[base+(i1*4)+1]=0;
+	[base+(i1*4)+2]=-1;
+	i1=i1+1;
+endwhile;
+breakpoint;
 alias counter R0;
 counter=2;
 while(counter<=15)  do
@@ -185,4 +204,5 @@ endwhile;
 [DISK_MAP_TABLE + 5] = 12;
 [DISK_MAP_TABLE + 10 + 4] = 7;
 [DISK_MAP_TABLE + 10 + 5] = 8;
+breakpoint;
 return;

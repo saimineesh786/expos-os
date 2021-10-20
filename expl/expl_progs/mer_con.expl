@@ -48,7 +48,7 @@ List mergeSort(List top)
       slow.next=null;
       x=exposcall("SemUnLock", semid);
       //If size less than 4, don't Fork
-      if(len<=8) then
+      if(len<=2) then
         a=mergeSort(a);
         b=mergeSort(b);
       else

@@ -12,6 +12,44 @@ if(funct_num == 3)	then
 	[DISK_STATUS_TABLE + 4] = current_pid;
 endif;
 
+if(funct_num == 4)	then
+	alias inode_index R2;
+	alias pid R3;
+	while([FILE_STATUS_TABLE+(inode_index*4)+0]!=-1)	do
+		[PROCESS_TABLE+(pid*16)+4]=WAIT_FILE;
+		[PROCESS_TABLE+(pid*16)+5]=inode_index;
+		multipush(R1,R2,R3);
+		call MOD_5;
+		multipop(R1,R2,R3);
+	endwhile;
+	if([INODE_TABLE+(inode_index*4)+1]==-1)	then
+		R0=-1;
+	else
+		[FILE_STATUS_TABLE+(inode_index*4)+0]=pid;
+		R0=0;
+	endif;
+endif;
+
+if(funct_num == 5)	then
+	alias inode_index R2;
+	alias pid R3;
+	if(pid!=[FILE_STATUS_TABLE+(inode_index*4)+0])	then
+		R0=-1;
+	else
+		[FILE_STATUS_TABLE+(inode_index*4)+0]=-1;
+		alias index R4;
+		index=0;
+		while(index<16)	do
+			if([PROCESS_TABLE+(index*16)+4]==WAIT_FILE&&[PROCESS_TABLE+(index*16)+5]==inode_index)	then
+				[PROCESS_TABLE+(index*16)+4]=READY;
+				[PROCESS_TABLE+(index*16)+5]="";
+			endif;
+			index=index+1;
+		endwhile;
+		R0=0;
+	endif;
+endif;
+
 if(funct_num==6)	then
 	alias current_pid R2;
 	alias index R3;
@@ -69,7 +107,7 @@ endif;
 if( funct_num == 9 )	then
 	alias current_pid R2;
 	if( current_pid == [TERMINAL_STATUS_TABLE+1])	then
-		[TERMINAL_STATUS_TABLE]=0;
+		[TERMINAL_STATUS_TABLE+0]=0;
 		alias pid R3;
 		pid=0;
 		while( pid <= 15 )	do
@@ -78,7 +116,6 @@ if( funct_num == 9 )	then
 			endif;
 			pid=pid+1;
 		endwhile;
-		
 		R0=0;
 	else
 		R0=-1;
