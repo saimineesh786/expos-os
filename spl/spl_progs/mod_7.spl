@@ -26,6 +26,10 @@ loadi(3,16);
 loadi(10,23);
 loadi(11,24);
 
+//int=5
+loadi(12,25);
+loadi(13,26);
+
 //int=6
 loadi(14,27);
 loadi(15,28);
@@ -74,6 +78,10 @@ loadi(43,56);
 loadi(44,57);
 loadi(45,58);
 
+//mod=3
+loadi(46,59);
+loadi(47,60);
+
 //mod=4
 loadi(48,61);
 loadi(49,62);
@@ -81,10 +89,11 @@ loadi(49,62);
 //mod=5
 loadi(50,63);
 loadi(51,64);
-breakpoint;
+
 //inode-table
 loadi(59,3);
 loadi(60,4);
+
 //root-file
 loadi(62,5);
 
@@ -186,7 +195,15 @@ while(i1<4)	do
 	[base+(i1*4)+2]=-1;
 	i1=i1+1;
 endwhile;
-breakpoint;
+
+base=OPEN_FILE_TABLE;
+i1=0;
+while(i1<32)	do
+	[base+(i1*4)+0]=-1;
+	[base+(i1*4)+1]=0;
+	i1=i1+1;
+endwhile;
+
 alias counter R0;
 counter=2;
 while(counter<=15)  do

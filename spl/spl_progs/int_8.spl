@@ -65,9 +65,15 @@ base2=([PROCESS_TABLE+(child_pid*16)+11]+1)*512;
 i=16;
 while(i>0)	do
 	if((i%2)==0)	then
-		if([base1-i]==1)	then
-			[SEMAPHORE_TABLE+([base1-i+1]*4)+1]=[SEMAPHORE_TABLE+([base1-i+1]*4)+1]+1;
+		R10=[base1-i];
+		if(R10==1)	then
+			R9=SEMAPHORE_TABLE+([base1-i+1]*4)+1;
+			[R9]=[R9]+1;
 		endif;	
+		if(R10==0)	then
+			R9=OPEN_FILE_TABLE+([base1-i+1]*4)+1;
+			[R9]=[R9]+1;
+		endif;
 	endif;
 	[base2-i]=[base1-i];
 	i=i-1;

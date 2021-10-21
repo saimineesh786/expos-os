@@ -35,7 +35,15 @@ if(funct_num == 2)	then
 				call MOD_0;
 				multipop(R1,R2,R3,R4);	
 			endif;
+			if([base-index]==0)	then
+				multipush(R1,R2,R3,R4);
+				R1=4;
+				R2=[base-index+1];
+				call MOD_3;
+				multipop(R1,R2,R3,R4);	
+			endif;	
 			[base-index]=-1;
+			[base-index+1]=-1;
 		endif;
 		index=index-2;	
 	endwhile;

@@ -1,5 +1,38 @@
 alias funct_num R1;
 
+if(funct_num==1)	then
+	alias buff_no R2;
+	alias pid R3;
+	while([BUFFER_TABLE+(buff_no*4)+2]!=-1)	do
+		[PROCESS_TABLE+(pid*16)+4]=WAIT_BUFFER;
+		[PROCESS_TABLE+(pid*16)+5]=buff_no;
+		multipush(R1,R2,R3);
+		call MOD_5;
+		multipop(R1,R2,R3);
+	endwhile;
+	[BUFFER_TABLE+(buff_no*4)+2]=pid;
+endif;
+
+if(funct_num==2)	then
+	alias buff_no R2;
+	alias pid R3;
+	if(pid!=[BUFFER_TABLE+(buff_no*4)+2])	then
+		[BUFFER_TABLE+(buff_no*4)+2]=-1;
+		alias index R4;
+		index=0;
+		while(index<16)	do
+			if([PROCESS_TABLE+(index*16)+4]==WAIT_BUFFER&&[PROCESS_TABLE+(index*16)+5]==buff_no)	then
+				[PROCESS_TABLE+(index*16)+4]=READY;
+				[PROCESS_TABLE+(index*16)+5]="";
+			endif;
+			index=index+1;
+		endwhile;
+		R0=0;
+	else
+		R0=-1;
+	endif;
+endif;
+
 if(funct_num == 3)	then
 	alias current_pid R2;
 	while([DISK_STATUS_TABLE + 0] == 1)	do
