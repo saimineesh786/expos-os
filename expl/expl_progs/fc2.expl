@@ -1,0 +1,20 @@
+int main(){
+    decl
+    	str fname; 
+        int permission;
+        int rt;
+    enddecl
+    begin
+        rt=exposcall("Write",-2,"FNAME : ");
+        rt=exposcall("Read",-1,fname);
+        rt=exposcall("Write",-2,"Permit : ");
+        rt=exposcall("Read",-1,permission);
+        rt=exposcall("Create",fname,permission);
+        write(rt);
+        breakpoint;
+        rt=exposcall("Delete","mintu.dat");
+        write(rt);
+        breakpoint;
+        return 0;
+    end
+}

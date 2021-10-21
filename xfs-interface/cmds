@@ -23,6 +23,7 @@ load --int=15 /home/saimineesh/myexpos/spl/spl_progs/int_15.xsm
 load --init /home/saimineesh/myexpos/expl/expl_progs/shell.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/odd.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/fc.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/fc2.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/init_20.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/prog2.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/gcd.xsm
@@ -32,6 +33,7 @@ load --exec /home/saimineesh/myexpos/expl/expl_progs/prog3.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/fork3.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/fork3_n.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/s22.xsm
+load --data /home/saimineesh/myexpos/expl/expl_progs/mintu.dat
 load --exec /home/saimineesh/myexpos/expl/expl_progs/pid.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/parent.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/mer_sq.xsm

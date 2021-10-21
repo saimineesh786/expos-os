@@ -50,6 +50,7 @@ if(syscallnum==1)	then
 			[base+2]=DATA;
 			[base+3]=[USER_TABLE+(uid*2)+0];
 			[base+4]=permission;
+			[rt_val]=0;
 		else
 			[rt_val]=-1;
 		endif;
@@ -68,10 +69,10 @@ if(syscallnum==4)	then
 	if(index<60)	then
 		alias base R4;
 		base=INODE_TABLE+(index*16);
-		if([base+1]==DATA)	then
-			if([base+4]==1)	then
+		if([base+0]==DATA)	then
+			if([base+4]==0)	then
 				if(([base+3]!=1)&&([base+3]!=[base_pt+3]))	then
-					[([PTBR+(2*((userSP-1)/512))]*512)+(userSP-1)%512]=-1;
+					[rt_val]=-1;
 					[base_pt+9]=0;
 					SP=[base_pt+13];
 					ireturn;
@@ -105,8 +106,15 @@ if(syscallnum==4)	then
 						[base+index2]=-1;
 						index2=index2+1;
 					endwhile;
+					[base+0]=-1;
 					[base+1]=-1;
-					[ROOT_FILE+(index*8)+0]=-1;
+					[base+3]=-1;
+					[base+4]=-1;
+					base=ROOT_FILE+(index*8);
+					[base+0]=-1;
+					[base+2]=-1;
+					[base+3]=-1;
+					[base+4]=-1;
 					[rt_val]=0;
 				else
 					[rt_val]=-2;

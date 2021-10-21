@@ -22,7 +22,7 @@ if(funct_num == 4)	then
 		call MOD_5;
 		multipop(R1,R2,R3);
 	endwhile;
-	if([INODE_TABLE+(inode_index*4)+1]==-1)	then
+	if([INODE_TABLE+(inode_index*4)+1]!=-1)	then
 		R0=-1;
 	else
 		[FILE_STATUS_TABLE+(inode_index*4)+0]=pid;

@@ -20,6 +20,7 @@ begin
             else
                 temp = exposcall("Exec",input);
                 if(temp != 0) then
+                    temp = exposcall("Exit",pid);
                     temp = exposcall("Write",-2, "BAD COMMAND");
                     continue;
                 endif;
