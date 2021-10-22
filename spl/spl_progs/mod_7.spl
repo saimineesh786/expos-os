@@ -191,7 +191,7 @@ base=BUFFER_TABLE;
 i1=0;
 while(i1<4)	do
 	[base+(i1*4)+0]=-1;
-	[base+(i1*4)+1]=0;
+	[base+(i1*4)+1]=-1;
 	[base+(i1*4)+2]=-1;
 	i1=i1+1;
 endwhile;

@@ -1,5 +1,3 @@
-
-
 decl
     int i, semid, pid, data, temp, filedis, a;
     string filename;
@@ -9,29 +7,33 @@ int main()
 {
 begin
     temp = exposcall("Read",-1,filename);
-    filedis = exposcall("Open", "numbers.dat");
+    filedis = exposcall("Open", filename);
+    write(filedis);
     semid = exposcall("Semget");
 
     pid = exposcall("Fork");
-    a = 0;
     data = -1;
     if(pid > 0) then
-        while(a != -2)  do
-            temp = exposcall("SemLock", semid);
-            a = exposcall("Read",filedis,data);
+    	temp = exposcall("SemLock", semid);
+        a = exposcall("Read",filedis,data);
+        while(a == 0)  do
             temp = exposcall("Write",-2,data);
             temp = exposcall("SemUnLock", semid);
+            temp = exposcall("SemLock", semid);
+            a = exposcall("Read",filedis,data);
         endwhile;
-        
+        temp = exposcall("SemUnLock", semid);
         temp = exposcall("Semrelease", semid);
     else
-        while(a != -2)  do
-            temp = exposcall("SemLock", semid);
-            a = exposcall("Read",filedis,data);
+        temp = exposcall("SemLock", semid);
+        a = exposcall("Read",filedis,data);
+        while(a == 0)  do
             temp = exposcall("Write",-2,data);
             temp = exposcall("SemUnLock", semid);
+            temp = exposcall("SemLock", semid);
+            a = exposcall("Read",filedis,data);
         endwhile;
-
+        temp = exposcall("SemUnLock", semid);
         temp = exposcall("Semrelease", semid);
     endif;
     

@@ -41,6 +41,8 @@ load --exec /home/saimineesh/myexpos/expl/expl_progs/parent.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/mer_sq.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/mer_con.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/fread_1.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/fread.xsm
+load --data /home/saimineesh/myexpos/expl/expl_progs/nums.dat
 load --exec /home/saimineesh/myexpos/expl/expl_progs/child.xsm
 load --idle /home/saimineesh/myexpos/expl/expl_progs/idle.xsm
 load --os /home/saimineesh/myexpos/spl/spl_progs/os_startup_13.xsm

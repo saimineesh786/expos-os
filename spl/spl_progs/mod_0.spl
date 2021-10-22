@@ -16,12 +16,12 @@ endif;
 if(funct_num==2)	then
 	alias buff_no R2;
 	alias pid R3;
-	if(pid!=[BUFFER_TABLE+(buff_no*4)+2])	then
+	if(pid==[BUFFER_TABLE+(buff_no*4)+2])	then
 		[BUFFER_TABLE+(buff_no*4)+2]=-1;
 		alias index R4;
 		index=0;
 		while(index<16)	do
-			if([PROCESS_TABLE+(index*16)+4]==WAIT_BUFFER&&[PROCESS_TABLE+(index*16)+5]==buff_no)	then
+			if(([PROCESS_TABLE+(index*16)+4]==WAIT_BUFFER)&&([PROCESS_TABLE+(index*16)+5]==buff_no))	then
 				[PROCESS_TABLE+(index*16)+4]=READY;
 				[PROCESS_TABLE+(index*16)+5]="";
 			endif;
@@ -55,7 +55,7 @@ if(funct_num == 4)	then
 		call MOD_5;
 		multipop(R1,R2,R3);
 	endwhile;
-	if([INODE_TABLE+(inode_index*4)+1]!=-1)	then
+	if([INODE_TABLE+(inode_index*16)+1]==-1)	then
 		R0=-1;
 	else
 		[FILE_STATUS_TABLE+(inode_index*4)+0]=pid;
@@ -73,7 +73,7 @@ if(funct_num == 5)	then
 		alias index R4;
 		index=0;
 		while(index<16)	do
-			if([PROCESS_TABLE+(index*16)+4]==WAIT_FILE&&[PROCESS_TABLE+(index*16)+5]==inode_index)	then
+			if(([PROCESS_TABLE+(index*16)+4]==WAIT_FILE)&&([PROCESS_TABLE+(index*16)+5]==inode_index))	then
 				[PROCESS_TABLE+(index*16)+4]=READY;
 				[PROCESS_TABLE+(index*16)+5]="";
 			endif;

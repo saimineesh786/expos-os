@@ -46,7 +46,7 @@ else
 				alias lseek_pos R9;
 				lseek_pos=[OPEN_FILE_TABLE+(oft_index*4)+2];
 				alias phy_addr_buff R10;
-				phy_addr_buff=([PTBR+(2*((buff-3)/512))]*512)+(buff-3)%512;
+				phy_addr_buff=([PTBR+(2*((buff)/512))]*512)+(buff)%512;
 				if(inode_index==INODE_ROOT)	then
 					if(lseek_pos==480)	then
 						multipush(R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10);
