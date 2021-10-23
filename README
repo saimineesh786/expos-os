@@ -1,17 +1,28 @@
 mod 0 ---- resource manager
-	-- 3 . Acquire Disk
+	-- 1 . Acquire Buffer
+	-- 2 . Release Buffer
+	-- 3 . Acquire Disk 
+	-- 4 . Acquire Inode
+	-- 5 . Release Inode
+	-- 6 . Acquire Semaphore
+	-- 7 . Release Semaphore
 	-- 8 . Acquire Terminal
 	-- 9 . Release Terminal
 mod 1 ---- process manager
 	-- 1 . Get PCB Entry
-	-- 2 . Free User Page
+	-- 2 . Free User Area Page
 	-- 3 . Exit Process
 	-- 4 . Free Page Table
+	-- 5 . Kill All
 mod 2 ---- memory manager
 	-- 1 . Get Free Page
-	-- 2 . Release Page
+	-- 2 . Release Page // flag
 	-- 4 . Release Block
 	-- 5 . Get Code Page
+mod 3 ---- file manager
+	-- 2 . Buffered Read
+	-- 3 . open file
+	-- 4 . close file
 mod 4 ---- device manager
 	-- 2 . Disk Load
 	-- 3 . Terminal Write
@@ -20,6 +31,13 @@ mod 5 ---- scheduler
 	-- scheduler if a process goes to Wait state or Timer Interrupt
 mod 7 ---- boot module
 	-- loads and links Init code, initalize Data structures Process Table, Page Table, Disk Status Table, Disk Map 		   Table,Per Process Table,Memory Free List, Terminal Status Table and System Status Table.
+int 4
+	-- create syscall
+	-- delete syscall
+int 5
+	-- open syscall
+	-- close syscall
+	-- seek syscall
 int 6   
 	-- read syscall	
 int 7	
@@ -31,11 +49,20 @@ int 9
 int 10
 	-- exit syscall
 int 11
-	-- Wait syscall
-	-- Signal syscall
+	-- wait syscall
+	-- signal syscall
 	-- get_pid syscall
 	-- get_ppid syscall
+int 13 
+	-- semget syscall
+	-- semrelease syscall
+int 14
+	-- semlock syscall
+	-- semunlock syscall 
 int 15
-	-- shutdown syscall
+	-- shutdown syscall // *** Shell pid changes in next stage ***//
+int timer
+int console
+int disk
 Note -- Never Mess Idle It shall be Only Infinite Loop No reads , No prints && No heap.
 	 XSM machine disables interrupts when executing in the kernel mode. Hence, the disk controller can raise an interrupt only when the machine is executing in the user mode. Hence the OS has to schedule "some process" even if all processess are waiting for disk/terminal interrupt - for otherwise, the device concerned will never be able to interrupt the processor. The IDLE process is precisely designed to take care of this and other similar situations. 

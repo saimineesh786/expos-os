@@ -1,42 +1,122 @@
-[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+9]=5;
-[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+13]=SP;
 alias userSP R0;
-userSP = SP;
+userSP=SP;
 
-SP=[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+11]*512-1;
+alias base_pt R1;
+base_pt=PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16);
 
-alias phy_page_num R1;
-alias offset R2;
-alias fd_phy_addr R3;
+alias rt_val R2;
+rt_val=([PTBR+(2*((userSP-1)/512))]*512)+(userSP-1)%512;
 
-phy_page_num=[PTBR+2*((userSP-4)/512)];
-offset=(userSP-4)%512;
-fd_phy_addr=(phy_page_num*512)+offset;
+[base_pt+9]=7;
+[base_pt+13]=SP;
+SP=([base_pt+11]*512)-1;
 
-alias fd R4;
-fd=[fd_phy_addr];
+alias fd R3;
+fd=[([PTBR+(2*((userSP-4)/512))]*512)+(userSP-4)%512];
 
-alias phy_addr_ret_val R5;
+alias word R4;
+word=[([PTBR+(2*((userSP-3)/512))]*512)+(userSP-3)%512];
 
-if(fd!=-2)
-then
-    phy_addr_ret_val=([PTBR+2*((userSP-1)/512)])*512+((userSP-1)%512);
-    [phy_addr_ret_val]=-1;
+if(fd==-2)	then
+	multipush(R0,R1,R2,R3,R4);
+	R1=3;
+	R2=[SYSTEM_STATUS_TABLE+1];
+	R3=word;
+	call MOD_4;
+	multipop(R0,R1,R2,R3,R4);
+	[rt_val]=0;
 else
-    alias word R5;
-    word=[([PTBR+2*((userSP-3)/512)])*512+((userSP-3)%512)];
-    multipush(R0,R1,R2,R3,R4,R5);
-    R1=3;
-    R2=[SYSTEM_STATUS_TABLE+1];
-    R3=word;
-    call MOD_4;
-    multipop(R0,R1,R2,R3,R4,R5);
-    
-    phy_addr_ret_val=([PTBR+2*((userSP-1)/512)])*512+((userSP-1)%512);
-    [phy_addr_ret_val]=0;
+	if(((fd%2)==0)&&(fd>0)&&(fd<=16))	then
+		alias base R5;
+		base=([base_pt+11]+1)*512;
+		if([base-fd]==0)	then
+			alias oft_index R6;
+			oft_index=[base-fd+1];
+			alias inode_index R7;
+			inode_index=[OPEN_FILE_TABLE+(oft_index*4)+0];
+			alias uid R8;
+			uid=[base_pt+3];
+			if((uid!=1)&&(uid!=[INODE_TABLE+(inode_index*16)+3])&&([INODE_TABLE+(inode_index*16)+4]==0))	then
+				[rt_val]=-3;
+			else
+				multipush(R0,R1,R2,R3,R4,R5,R6,R7,R8);
+				R1=4;
+				R2=inode_index;
+				R3=[SYSTEM_STATUS_TABLE+1];
+				call MOD_0;
+				R9=R0;
+				multipop(R0,R1,R2,R3,R4,R5,R6,R7,R8);
+				if(R9!=-1)	then
+					alias lseek_pos R10;
+					lseek_pos=[OPEN_FILE_TABLE+(oft_index*4)+2];
+					if(lseek_pos==MAX_FILE_SIZE)	then
+						multipush(R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10);
+						R1=5;
+						R2=inode_index;
+						R3=[SYSTEM_STATUS_TABLE+1];
+						call MOD_0;
+						multipop(R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10);
+						[rt_val]=-2;
+					else
+						if(((lseek_pos%512)==0)&&(lseek_pos==[INODE_TABLE+(inode_index*16)+2]))	then
+							multipush(R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10);
+							R1=3;
+							call MOD_2;
+							R11=R0;
+							multipop(R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10);
+							if(R11!=-1)	then
+								[INODE_TABLE+(inode_index*16)+8+(lseek_pos/512)]=R11;
+							else
+								multipush(R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11);
+								R1=5;
+								R2=inode_index;
+								R3=[SYSTEM_STATUS_TABLE+1];
+								call MOD_0;
+								multipop(R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11);
+								[rt_val]=-2;
+								[base_pt+9]=0;
+								SP=[base_pt+13];
+								ireturn;
+							endif;	
+						endif;
+						alias buff_index R11;
+						buff_index=lseek_pos/512;
+						alias disk_block_no R12;
+						disk_block_no=[INODE_TABLE+(inode_index*16)+8+buff_index];
+						alias offset R13;
+						offset=lseek_pos%512;
+						multipush(R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,R12,R13);
+						R1=1;
+						R2=disk_block_no;
+						R3=offset;
+						R4=word;
+						call MOD_3;
+						multipop(R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,R12,R13);
+						if(lseek_pos==[INODE_TABLE+(inode_index*16)+2])	then
+							[INODE_TABLE+(inode_index*16)+2]=[INODE_TABLE+(inode_index*16)+2]+1;
+							[ROOT_FILE+(inode_index*16)+1]=[ROOT_FILE+(inode_index*16)+1]+1;
+						endif;
+						[OPEN_FILE_TABLE+(oft_index*4)+2]=[OPEN_FILE_TABLE+(oft_index*4)+2]+1;
+						multipush(R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,R12,R13);
+						R1=5;
+						R2=inode_index;
+						R3=[SYSTEM_STATUS_TABLE+1];
+						call MOD_0;
+						multipop(R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,R12,R13);
+						[rt_val]=0;
+					endif;
+				else
+					[rt_val]=-1;
+				endif;
+			endif;
+		else
+			[rt_val]=-1;
+		endif;
+	else
+		[rt_val]=-1;
+	endif;
 endif;
 
-SP=[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+13];
-[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+9]=0;
-
+[base_pt+9]=0;
+SP=[base_pt+13];
 ireturn;

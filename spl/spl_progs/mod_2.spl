@@ -40,6 +40,20 @@ if(funct_num == 2)	then
 	endif;
 endif;
 
+if(funct_num==3)	then
+	alias disk_trav R2;
+	disk_trav=DISK_FREE_AREA;
+	while(disk_trav<DISK_SWAP_AREA)	do
+		if([DISK_FREE_LIST+disk_trav]==0)	then
+			[DISK_FREE_LIST+disk_trav]=1;
+			R0=disk_trav;
+			return;
+		endif;
+		disk_trav=disk_trav+1;
+	endwhile;
+	R0=-1;
+endif;
+
 if(funct_num == 4)	then
 	alias disk_block_num R2;
 	alias current_pid R3;

@@ -1,0 +1,23 @@
+int main(){
+    decl
+    	str fromfname,tofname; 
+        int permission;
+        int rt,z;
+        str var;
+        int fd1,fd2;
+    enddecl
+    begin
+        rt=exposcall("Write",-2,"fromfname: ");
+        rt=exposcall("Read",-1,fromfname);
+        rt=exposcall("Write",-2,"tofname: ");
+        rt=exposcall("Read",-1,tofname);
+        fd1=exposcall("Open",fromfname);
+        fd2=exposcall("Open",tofname);
+        rt=exposcall("Read",fd1,var);
+        while(rt==0)	do
+        	z=exposcall("Write",fd2,var);
+        	rt=exposcall("Read",fd1,var);
+        endwhile;
+        return 0;
+    end
+}

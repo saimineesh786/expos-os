@@ -1,0 +1,32 @@
+int main(){
+    decl
+    	str fname; 
+        int permission;
+        int rt,z;
+        str var;
+        int num;
+        int fd;
+    enddecl
+    begin
+        rt=exposcall("Write",-2,"FNAME : ");
+        rt=exposcall("Read",-1,fname);
+        fd=exposcall("Open",fname);
+        z=1;
+        while(z<=1100)	do
+        	rt=exposcall("Write",fd,z);
+        	z=z+1;
+        endwhile;
+        z=exposcall("Seek",fd,1099);
+        rt=exposcall("Read",fd,num);
+        while(rt==0)	do
+        	write(num);
+        	z=exposcall("Seek",fd,-1);
+        	if(z<0)	then
+        		break;
+        	endif;
+       	rt=exposcall("Read",fd,num);
+        endwhile;
+        z=exposcall("Write",-2,"EOF");
+        return 0;
+    end
+}
