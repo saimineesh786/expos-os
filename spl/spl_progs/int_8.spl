@@ -101,7 +101,7 @@ while(i<16)	do
 	[base2+i]=[base1+i];
 	i=i+1;
 endwhile;
-base1=[PAGE_TABLE_BASE+([SYSTEM_STATUS_TABLE+1]*20)+16]*512;
+base1=[PTBR+16]*512;
 base2=[PAGE_TABLE_BASE+(child_pid*20)+16]*512;
 alias b21 R6;
 alias b22 R7;
@@ -122,4 +122,5 @@ base2=[PROCESS_TABLE+(child_pid*16)+13];
 endif;
 [PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+9]=0;
 SP=[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+13];
+breakpoint;
 ireturn;	

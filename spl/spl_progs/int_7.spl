@@ -7,7 +7,7 @@ base_pt=PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16);
 alias rt_val R2;
 rt_val=([PTBR+(2*((userSP-1)/512))]*512)+(userSP-1)%512;
 
-[base_pt+9]=7;
+[base_pt+9]=5;
 [base_pt+13]=SP;
 SP=([base_pt+11]*512)-1;
 
@@ -50,12 +50,12 @@ else
 					alias lseek_pos R10;
 					lseek_pos=[OPEN_FILE_TABLE+(oft_index*4)+2];
 					if(lseek_pos==MAX_FILE_SIZE)	then
-						multipush(R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10);
+						multipush(R0,R1,R2);
 						R1=5;
 						R2=inode_index;
 						R3=[SYSTEM_STATUS_TABLE+1];
 						call MOD_0;
-						multipop(R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10);
+						multipop(R0,R1,R2);
 						[rt_val]=-2;
 					else
 						if(((lseek_pos%512)==0)&&(lseek_pos==[INODE_TABLE+(inode_index*16)+2]))	then
@@ -67,12 +67,12 @@ else
 							if(R11!=-1)	then
 								[INODE_TABLE+(inode_index*16)+8+(lseek_pos/512)]=R11;
 							else
-								multipush(R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11);
+								multipush(R0,R1,R2);
 								R1=5;
 								R2=inode_index;
 								R3=[SYSTEM_STATUS_TABLE+1];
 								call MOD_0;
-								multipop(R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11);
+								multipop(R0,R1,R2);
 								[rt_val]=-2;
 								[base_pt+9]=0;
 								SP=[base_pt+13];
@@ -94,15 +94,15 @@ else
 						multipop(R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,R12,R13);
 						if(lseek_pos==[INODE_TABLE+(inode_index*16)+2])	then
 							[INODE_TABLE+(inode_index*16)+2]=[INODE_TABLE+(inode_index*16)+2]+1;
-							[ROOT_FILE+(inode_index*16)+1]=[ROOT_FILE+(inode_index*16)+1]+1;
+							[ROOT_FILE+(inode_index*8)+1]=[ROOT_FILE+(inode_index*8)+1]+1;
 						endif;
 						[OPEN_FILE_TABLE+(oft_index*4)+2]=[OPEN_FILE_TABLE+(oft_index*4)+2]+1;
-						multipush(R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,R12,R13);
+						multipush(R0,R1,R2);
 						R1=5;
 						R2=inode_index;
 						R3=[SYSTEM_STATUS_TABLE+1];
 						call MOD_0;
-						multipop(R0,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,R12,R13);
+						multipop(R0,R1,R2);
 						[rt_val]=0;
 					endif;
 				else

@@ -141,6 +141,7 @@ if(funct_num==5)	then
 			R5=R3;
 			R3=current_pid;
 			R2=R5;
+			call MOD_0;
 			multipop(R1,R2,R3,R4);
 		endif;
 		index=index+1;
@@ -161,10 +162,11 @@ if(funct_num==5)	then
 		base=INODE_TABLE+(index*16);
 		if(([base+1]!=-1)&&([base+0]==DATA))	then
 			multipush(R1,R2,R3,R4);
-			R1=4;
+			R1=5;
 			R5=R3;
 			R3=current_pid;
 			R2=R5;
+			call MOD_0;
 			multipop(R1,R2,R3,R4);
 		endif;
 		index=index+1;

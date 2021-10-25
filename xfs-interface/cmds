@@ -35,9 +35,11 @@ load --exec /home/saimineesh/myexpos/expl/expl_progs/prog3.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/fork3.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/fork3_n.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/s22.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/rv_read.xsm
 load --data /home/saimineesh/myexpos/expl/expl_progs/sample.dat
 load --exec /home/saimineesh/myexpos/expl/expl_progs/pid.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/s25_1.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/s25_2.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/s25_3.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/s25_4.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/parent.xsm

@@ -68,23 +68,20 @@ if(funct_num == 5)	then
 	while(i2 < 160)	do
 		if(((i2%10)>3)&&((i2%10)<8))	then
 			if([DISK_MAP_TABLE+i2]==disk_block_num)	then
-				break;
+				alias pno R5;
+				alias met_data R6;
+				pno = i2 / 10;
+				met_data = [PAGE_TABLE_BASE + (pno * 20) + (2 * (i2 % 10)) + 1];
+				if(([PAGE_TABLE_BASE + (pno * 20) + (2 * (i2 % 10))] != -1)&&((met_data == "0100")||(met_data == "0101")||(met_data == "0110")||(met_data == "0111")||(met_data == "1100")||(met_data == "1101")||(met_data == "1110")||(met_data == "1111")))	then
+					R7=[PAGE_TABLE_BASE+(pno*20)+(2*(i2 % 10))];
+					[MEMORY_FREE_LIST+R7] = [MEMORY_FREE_LIST+R7] + 1;
+					R0 = R7;
+					return;
+				endif; 
 			endif;
 		endif;
 		i2 = i2 + 1;
 	endwhile; 
-	if(i2 < 160)	then
-		alias pno R5;
-		alias met_data R6;
-		pno = i2 / 10;
-		met_data = [PAGE_TABLE_BASE + (pno * 20) + (2 * (i2 % 10)) + 1];
-		if(([PAGE_TABLE_BASE + (pno * 20) + (2 * (i2 % 10))] != -1)&&((met_data == "0100")||(met_data == "0101")||(met_data == "0110")||(met_data == "0111")||(met_data == "1100")||(met_data == "1101")||(met_data == "1110")||(met_data == "1111")))	then
-			R7=[PAGE_TABLE_BASE+(pno*20)+(2*(i2 % 10))];
-			[MEMORY_FREE_LIST+R7] = [MEMORY_FREE_LIST+R7] + 1;
-			R0 = R7;
-			return;
-		endif; 
-	endif;
 	
 	multipush(R1,R2,R3);
 	R1 = 1;

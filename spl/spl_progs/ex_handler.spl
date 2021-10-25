@@ -4,9 +4,13 @@ SP = ([PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1]*16) + 11] * 512) - 1;
 backup;
 multipush(EIP);
 
- 
+breakpoint;
 if((EC == 1) || (EC == 2) || (EC == 3) ||([PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1]*16) + 13] >= ((PTLR * 512) - 1)))	then
 
+	print [SYSTEM_STATUS_TABLE+1];
+	print EC;
+	print [PTBR + (2 * (EIP/512))] ;
+	print EIP%512;
 	if(EC == 1)	then
 		print "Ilgl_Ins"; 
 	endif;
@@ -16,7 +20,7 @@ if((EC == 1) || (EC == 2) || (EC == 3) ||([PROCESS_TABLE + ([SYSTEM_STATUS_TABLE
 	if(EC == 3)	then
 		print "Arith_Ex";
 	endif;
-	if([PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1]*16) + 13] == ((PTLR * 512) - 1))	then
+	if([PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1]*16) + 13] >= ((PTLR * 512) - 1))	then
 		print "Stk_Oflow";
 	endif;
 	

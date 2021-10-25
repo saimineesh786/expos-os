@@ -92,7 +92,7 @@ if(syscallnum==4)	then
 					while(index2<12)	do
 						if([base+index2]!=-1)	then
 							alias buffer_index R8;
-							buffer_index=BUFFER_TABLE+([base+index2]%4)*4;
+							buffer_index=BUFFER_TABLE+(([base+index2]%4)*4);
 							if(([buffer_index+0]==[base+index2])&&([buffer_index+1]==1))	then
 								[buffer_index+1]=0;
 							endif;
@@ -108,10 +108,12 @@ if(syscallnum==4)	then
 					endwhile;
 					[base+0]=-1;
 					[base+1]=-1;
+					[base+2]=-1;
 					[base+3]=-1;
 					[base+4]=-1;
 					base=ROOT_FILE+(index*8);
 					[base+0]=-1;
+					[base+1]=-1;
 					[base+2]=-1;
 					[base+3]=-1;
 					[base+4]=-1;
@@ -124,7 +126,6 @@ if(syscallnum==4)	then
 				R2=index;
 				R3=[SYSTEM_STATUS_TABLE+1];
 				call MOD_0;
-				R6=R0;
 				multipop(R0,R1,R2,R3,R4,R5,R6,R9,R10);
 			else
 				[rt_val]=0;

@@ -58,7 +58,7 @@ if(syscallnum==3)	then
 			oft_index=[base-fd+1];
 			multipush(R0,R1,R2,R3,R4,R5,R6);
 			R1=4;
-			R2=fd;
+			R2=oft_index;
 			call MOD_3;
 			multipop(R0,R1,R2,R3,R4,R5,R6);
 			[base-fd]=-1;
@@ -99,13 +99,13 @@ if(syscallnum==6)	then
 				if([OPEN_FILE_TABLE+(oft_index*4)+0]==INODE_ROOT)	then
 					fsize=480;
 				else
-					fsize=[INODE_TABLE+(inode_index)+2];
+					fsize=[INODE_TABLE+(inode_index*16)+2];
 				endif;
 				if((lseek_cur+offset)<0)	then
 					[rt_val]=-2;
 				else
 					if(offset==0)	then
-						[OPEN_FILE_TABLE+(oft_index*4)+2]=0;
+						lseek_cur=0;
 					else
 						if((offset+lseek_cur)>fsize)	then
 							lseek_cur=fsize;
@@ -113,6 +113,7 @@ if(syscallnum==6)	then
 							lseek_cur=lseek_cur+offset;
 						endif;
 					endif;
+					
 					[OPEN_FILE_TABLE+(oft_index*4)+2]=lseek_cur;
 					[rt_val]=0;
 				endif;
