@@ -1,0 +1,29 @@
+
+
+int main()
+{
+decl
+    int temp,a;
+    string uname,pword;
+enddecl
+begin
+    a=1;
+    while(a == 1) do
+        temp = exposcall("Write",-2,"---USERNAME---");
+        temp = exposcall("Read",-1, uname);
+        temp = exposcall("Write",-2,"---PASSWORD---");
+        temp = exposcall("Read",-1, pword);
+        temp = exposcall("Login",uname,pword);
+        if(temp==-1)	then
+        	temp = exposcall("Write",-2,"Inval Unam/Pwor");
+        endif;
+        if(temp==-2)	then
+        	temp = exposcall("Write",-2,"Perms Denied");
+        endif;
+    endwhile;
+   
+    return 0;
+end
+}
+
+
