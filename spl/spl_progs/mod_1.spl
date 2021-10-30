@@ -148,15 +148,16 @@ if(funct_num==5)	then
 	endwhile;
 	index=2;
 	while(index<16)	do
-		if((current_pid!=index)&&([PROCESS_TABLE+(current_pid*16)+4]!=TERMINATED))	then
+		if((current_pid!=index)&&([PROCESS_TABLE+(index*16)+4]!=TERMINATED))	then
 			multipush(R1,R2,R3,R4);
 			R1=3;
-			R2=current_pid;
+			R2=index;
 			call MOD_1;
 			multipop(R1,R2,R3,R4);
 		endif;
 		index=index+1;
 	endwhile;
+	
 	index=0;
 	while(index<60)	do
 		base=INODE_TABLE+(index*16);
@@ -171,6 +172,7 @@ if(funct_num==5)	then
 		endif;
 		index=index+1;
 	endwhile;
+	breakpoint;
 endif;
 
 return;

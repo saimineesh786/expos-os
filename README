@@ -17,13 +17,16 @@ mod 1 ---- process manager
 mod 2 ---- memory manager
 	-- 1 . Get Free Page
 	-- 2 . Release Page // flag
+	-- 3 . Get Free Block
 	-- 4 . Release Block
-	-- 5 . Get Code Page
+	-- 5 . Get Code Page <disk_block_num,pid>
 mod 3 ---- file manager
+	-- 1 . Buffered Write
 	-- 2 . Buffered Read
 	-- 3 . open file
 	-- 4 . close file
 mod 4 ---- device manager
+	-- 1 . Disk Store
 	-- 2 . Disk Load
 	-- 3 . Terminal Write
 	-- 4 . Terminal Read
@@ -53,6 +56,8 @@ int 11
 	-- signal syscall
 	-- get_pid syscall
 	-- get_ppid syscall
+int 12
+	-- Logout syscall
 int 13 
 	-- semget syscall
 	-- semrelease syscall
@@ -61,8 +66,17 @@ int 14
 	-- semunlock syscall 
 int 15
 	-- shutdown syscall // *** Shell pid changes in next stage ***//
+int 16
+	-- newusr syscall
+	-- remusr syscall
+	-- setpwd syscall
+	-- getuname syscall
+	-- getuid syscall
+int 17 
+	-- Login syscall
 int timer
 int console
 int disk
+exception_handler
 Note -- Never Mess Idle It shall be Only Infinite Loop No reads , No prints && No heap.
 	 XSM machine disables interrupts when executing in the kernel mode. Hence, the disk controller can raise an interrupt only when the machine is executing in the user mode. Hence the OS has to schedule "some process" even if all processess are waiting for disk/terminal interrupt - for otherwise, the device concerned will never be able to interrupt the processor. The IDLE process is precisely designed to take care of this and other similar situations. 

@@ -46,17 +46,6 @@ PTBR = PAGE_TABLE_BASE;
 [DISK_STATUS_TABLE+0] = 0;
 [TERMINAL_STATUS_TABLE+0]=0;
 
-SP=(76*512)-1;
-
-call BOOT_MODULE;
-
-alias counter R0;
-counter=3;
-while(counter<=15)  do
-    [PROCESS_TABLE+(counter*16)+4]=TERMINATED;
-    counter=counter+1;
-endwhile;
-
 alias i R1;
 i = 0;
 while(i < 128)   do
@@ -67,6 +56,17 @@ while(i < 128)   do
 	endif;
 	i = i + 1;
 endwhile;
+
+alias counter R0;
+counter=3;
+while(counter<=15)  do
+    [PROCESS_TABLE+(counter*16)+4]=TERMINATED;
+    counter=counter+1;
+endwhile;
+
+SP=(76*512)-1;
+
+call BOOT_MODULE;
 
 PTBR = PAGE_TABLE_BASE;
 PTLR = 10;

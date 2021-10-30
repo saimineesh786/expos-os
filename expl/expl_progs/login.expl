@@ -9,11 +9,14 @@ enddecl
 begin
     a=1;
     while(a == 1) do
+    	
         temp = exposcall("Write",-2,"---USERNAME---");
         temp = exposcall("Read",-1, uname);
+        breakpoint;
         temp = exposcall("Write",-2,"---PASSWORD---");
         temp = exposcall("Read",-1, pword);
         temp = exposcall("Login",uname,pword);
+        
         if(temp==-1)	then
         	temp = exposcall("Write",-2,"Inval Unam/Pwor");
         endif;

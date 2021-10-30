@@ -1,0 +1,27 @@
+int main(){
+    decl
+    	int fd,rt,z;
+    	str fname,uname,funame;
+    enddecl
+    begin
+        fd=exposcall("Open","root");
+        rt=exposcall("Read",-1,uname);
+        if(fd>=0)	then
+        	rt=exposcall("Read",fd,fname);
+        	
+        	while(rt==0)	do
+        		rt=exposcall("Seek",fd,2);
+        		rt=exposcall("Read",fd,funame);
+        		
+        		if(funame==uname)	then
+        			rt=exposcall("Delete",fname);
+        		endif;
+        		rt=exposcall("Seek",fd,4);
+        		rt=exposcall("Read",fd,fname);
+        	endwhile;
+        else
+        	write("MaxFileOpened");
+        endif;
+        return 0;
+    end
+}

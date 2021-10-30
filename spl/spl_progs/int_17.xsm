@@ -146,6 +146,7 @@ _L7:
 MOV [R2], -1
 _L8:
 _L2:
+BRKP
 MOV R16, R1
 ADD R16, 9
 MOV [R16], 0

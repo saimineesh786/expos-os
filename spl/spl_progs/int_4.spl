@@ -71,7 +71,8 @@ if(syscallnum==4)	then
 		base=INODE_TABLE+(index*16);
 		if([base+0]==DATA)	then
 			if([base+4]==0)	then
-				if(([base+3]!=1)&&([base+3]!=[base_pt+3]))	then
+				if(([base_pt+3]!=1)&&([base+3]!=[base_pt+3]))	then
+					print "del";
 					[rt_val]=-1;
 					[base_pt+9]=0;
 					SP=[base_pt+13];

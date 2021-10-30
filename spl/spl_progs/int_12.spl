@@ -14,27 +14,29 @@ SP=([base_pt+11]*512)-1;
 if([base_pt+1]!=2)	then
 	[rt_val]=-1;
 else
+	
 	multipush(R0,R1,R2);
 	R2=[base_pt+1];
 	R1=5;
 	call MOD_1;
 	multipop(R0,R1,R2);
+	
 	[base_pt+4]=TERMINATED;
 	alias stk_page R3;
 	stk_page=[PTBR+16];
 	alias first_code_page R4;
 	first_code_page=[PTBR+8];
 	[stk_page*512]=[(first_code_page*512)+1];
-	SP=4096;
-	[base_pt+13]=SP;
+	[base_pt+13]=4096;
 	[PROCESS_TABLE+16+4]=READY;
 	[PROCESS_TABLE+16+5]="";
 	[SYSTEM_STATUS_TABLE+0]=0;
+	
 	multipush(R0,R1,R2,R3,R4);
 	call MOD_5;
 	multipop(R0,R1,R2,R3,R4);
 endif;
-
+breakpoint;
 [base_pt+9]=0;
 SP=[base_pt+13];
 ireturn;

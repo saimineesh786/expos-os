@@ -22,6 +22,7 @@ else
 		R1=5;
 		call MOD_1;
 		multipop(R0,R1,R2);
+		
 		alias index R4;
 		index=0;
 		while(index<4)	do
@@ -36,6 +37,7 @@ else
 			endif;
 			index=index+1;
 		endwhile;
+		
 		multipush(R0,R1,R2,R4);
 		R1=1;
 		R2=[SYSTEM_STATUS_TABLE+1];

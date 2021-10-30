@@ -34,6 +34,8 @@ load --exec /home/saimineesh/myexpos/expl/expl_progs/init_20.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/prog2.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/gcd.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/sort.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/lu.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/ru.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/list.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/prog3.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/fork3.xsm

@@ -32,7 +32,7 @@ if(syscallnum==22)	then
 			if([USER_TABLE+(uid*2)+0]==uname)	then
 				break;
 			endif;
-			if((free_uid!=-1)&&([USER_TABLE+(uid*2)+0]==-1))	then
+			if((free_uid==-1)&&([USER_TABLE+(uid*2)+0]==-1))	then
 				free_uid=uid;
 			endif;
 			uid=uid+1;

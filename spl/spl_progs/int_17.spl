@@ -47,7 +47,7 @@ else
 		[rt_val]=-1;
 	endif;
 endif;
-
+breakpoint;
 [base_pt+9]=0;
 SP=[base_pt+13];
 ireturn;
