@@ -11,31 +11,38 @@ process_table_entry=PROCESS_TABLE+(current_pid*16);
 [process_table_entry+15]=PTLR;
 
 alias new_pid R2;
-alias counter R3;
+if([SYSTEM_STATUS_TABLE+5]!=0)	then
+	if([PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+4]==WAIT_DISK)	then
+		new_pid=0;
+	else
+		new_pid=15;
+	endif;
+else
+	alias counter R3;
+	counter=current_pid+1;
+	new_pid=-1;
+	while(counter<15)  do
+    	if(([PROCESS_TABLE+(counter*16)+6]==0)&&([PROCESS_TABLE+(counter*16)+4]==CREATED||[PROCESS_TABLE+(counter*16)+4]==READY))  then
+        	new_pid=counter;
+       	break;
+    	endif;
+    	counter=counter+1;
+	endwhile;
 
-counter=current_pid+1;
-new_pid=-1;
-while(counter<=15)  do
-    if([PROCESS_TABLE+(counter*16)+4]==CREATED||[PROCESS_TABLE+(counter*16)+4]==READY)  then
-        new_pid=counter;
-        break;
-    endif;
-    counter=counter+1;
-endwhile;
+	if(new_pid==-1) then
+    	counter=1;
+    	while(counter<=current_pid)    do
+        	if(([PROCESS_TABLE+(counter*16)+6]==0)&&([PROCESS_TABLE+(counter*16)+4]==CREATED||[PROCESS_TABLE+(counter*16)+4]==READY))  then
+       	     new_pid=counter;
+        	    break;
+        	endif;
+        	counter=counter+1;
+    	endwhile;
+	endif;
 
-if(new_pid==-1) then
-    counter=1;
-    while(counter<=current_pid)    do
-        if([PROCESS_TABLE+(counter*16)+4]==CREATED||[PROCESS_TABLE+(counter*16)+4]==READY)  then
-            new_pid=counter;
-            break;
-        endif;
-        counter=counter+1;
-    endwhile;
-endif;
-
-if(new_pid==-1) then
-    new_pid=0;
+	if(new_pid==-1) then
+    		new_pid=0;
+	endif;
 endif;
 [SYSTEM_STATUS_TABLE+1]=new_pid;
 PTBR=[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+14];

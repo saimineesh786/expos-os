@@ -105,6 +105,10 @@ loadi(49,62);
 loadi(50,63);
 loadi(51,64);
 
+//mod=6;
+loadi(52,65);
+loadi(53,66);
+
 //inode-table
 loadi(59,3);
 loadi(60,4);

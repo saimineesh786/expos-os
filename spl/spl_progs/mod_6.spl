@@ -1,0 +1,158 @@
+alias funct_num R1;
+alias pid R2;
+
+if(funct_num==1)	then
+	alias index R3;
+	index=3;
+	alias type1 R4;
+	alias type2 R5;
+	alias type3 R6;
+	type1=-1;
+	type2=-1;
+	type3=-1;
+	while(index<16)	do
+		alias state R7;
+		alias swap_status R8;
+		swap_status=[PROCESS_TABLE+(index*16)+6];
+		state=[PROCESS_TABLE+(index*16)+4];
+		if((type1==-1)&&(swap_status==0)&&(state==WAIT_PROCESS))	then
+			type1=index;
+		endif;
+		if((type2==-1)&&(swap_status==0)&&(state==WAIT_SEMAPHORE))	then
+			type2=index;
+		endif;
+		if((type3==-1)&&(swap_status==0)&&(state!=TERMINATED)&&(state!=ALLOCATED)&&(state!=RUNNING))	then
+			type3=index;
+		endif;
+		index=index+1;
+	endwhile;
+	alias swap_pid R3;
+	swap_pid=-1;
+	if(type1!=-1)	then
+		swap_pid=type1;
+	else
+		if(type2!=-1)	then
+			swap_pid=type2;
+		else
+			if(type3!=-1)	then
+				swap_pid=type3;
+			endif;
+		endif;
+	endif;	
+	if(swap_pid!=-1)	then
+		[PROCESS_TABLE+(swap_pid*16)+0]=0;
+		alias pt_base R4;
+		pt_base=PAGE_TABLE_BASE+(swap_pid*20);
+		alias index R5;
+		index=8;
+		while(index<16)	do
+			if([pt_base+index]!=-1)	then
+				multipush(R1,R2,R3,R4,R5);
+				R1=2;	
+				R2=[pt_base+index];
+				call MOD_2;
+				multipop(R1,R2,R3,R4,R5);
+				[pt_base+index]=-1;
+				[pt_base+index+1]="0000";
+			endif;
+			index=index+2;
+		endwhile;
+		index=4;
+		while(index<20)		do
+			alias page_num R6;
+			page_num=[pt_base+index];
+			if((page_num!=-1)&&([MEMORY_FREE_LIST+page_num]==1))	then
+				multipush(R1,R2,R3,R4,R5,R6);
+				R1=6;	
+				call MOD_2;
+				R7=R0;
+				multipop(R1,R2,R3,R4,R5,R6);
+				[DISK_MAP_TABLE+(swap_pid*10)+(index/2)]=R7;
+				multipush(R1,R2,R3,R4,R5,R6,R7);
+				R1=1;
+				R2=pid;
+				R3=page_num;
+				R4=R7;
+				call MOD_4;
+				multipop(R1,R2,R3,R4,R5,R6,R7);
+				multipush(R1,R2,R3,R4,R5,R6,R7);
+				R1=2;
+				R3=pid;
+				R2=page_num;
+				call MOD_2;
+				multipop(R1,R2,R3,R4,R5,R6,R7);
+				[pt_base+index]=-1;
+				[pt_base+index+1]="0000";
+			endif;
+			index=index+2;
+			if(index==8)	then
+				index=16;
+			endif;
+		endwhile;
+		[PROCESS_TABLE+(swap_pid*16)+6]=1;
+		[SYSTEM_STATUS_TABLE+4]=[SYSTEM_STATUS_TABLE+4]+1;
+		[SYSTEM_STATUS_TABLE+5]=0;
+	else
+		[SYSTEM_STATUS_TABLE+5]=0;
+	endif;
+endif;
+
+if(funct_num==2)	then
+	alias index R4;
+	index=0;
+	alias in_pid R3;
+	in_pid=-1;
+	alias maxtik R5;
+	maxtik=-1;
+	while(index<16)	do
+		if(([PROCESS_TABLE+(index*16)+4]==READY)&&([PROCESS_TABLE+(index*16)+6]==1))	then
+			if([PROCESS_TABLE+(index*16)+0]>maxtik)	then
+				maxtik=[PROCESS_TABLE+(index*16)+0];
+				in_pid=index;
+			endif;
+		endif;
+	endwhile;
+	if(in_pid!=-1)	then
+		[PROCESS_TABLE+(in_pid*16)+0]=0;
+		alias pt_base R4;
+		pt_base=PAGE_TABLE_BASE+(in_pid*20);
+		alias index R5;
+		index=4;
+		while(index<20)	do
+			if([DISK_MAP_TABLE+(in_pid*10)+(index/2)]!=-1)	then
+				multipush(R1,R2,R3,R4,R5);
+				R1=1;
+				call MOD_2;
+				R6=R0;
+				multipop(R1,R2,R3,R4,R5);
+				R7=[DISK_MAP_TABLE+(in_pid*10)+(index/2)];
+				multipush(R1,R2,R3,R4,R5,R6,R7);
+				R1=2;
+				R2=pid;
+				R3=R6;
+				R4=R7;
+				call MOD_4;
+				multipop(R1,R2,R3,R4,R5,R6,R7);
+				multipush(R1,R2,R3,R4,R5,R6,R7);
+				R1=4;
+				R2=R7;
+				call MOD_2;
+				multipop(R1,R2,R3,R4,R5,R6,R7);
+				[pt_base+index]=R6;
+				[pt_base+index+1]="0110";
+				[DISK_MAP_TABLE+(in_pid*10)+(index/2)]=-1;
+			endif;
+			index=index+2;
+			if(index==8)	then
+				index=16;
+			endif;
+		endwhile;
+		[PROCESS_TABLE+(in_pid*16)+6]=0;
+		[SYSTEM_STATUS_TABLE+4]=[SYSTEM_STATUS_TABLE+4]-1;
+		[SYSTEM_STATUS_TABLE+5]=0;
+	else
+		[SYSTEM_STATUS_TABLE+5]=0;
+	endif;
+endif;
+
+return;

@@ -99,4 +99,17 @@ if(funct_num == 5)	then
 	multipop(R0);
 endif;
 
+if(funct_num==5)	then
+	alias index R2;
+	index=DISK_SWAP_AREA;
+	while(index<DISK_SIZE)	do
+		if([DISK_FREE_LIST+index]==0)	then
+			R0=index;
+			return;
+		endif;
+		index=index+1;
+	endwhile;
+	R0=-1;
+endif;
+
 return;
