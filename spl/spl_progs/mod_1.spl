@@ -3,9 +3,9 @@ alias current_pid R2;
 
 if(funct_num==1)	then
 	alias index R3;
-	index=0;
+	index=3;
 	alias base R4;
-	while(index<16)	do
+	while(index<15)	do
 		base=PROCESS_TABLE+(index*16);
 		if([base+4]==TERMINATED)	then
 			[base+1]=index;
@@ -147,7 +147,7 @@ if(funct_num==5)	then
 		index=index+1;
 	endwhile;
 	index=2;
-	while(index<16)	do
+	while(index<15)	do
 		if((current_pid!=index)&&([PROCESS_TABLE+(index*16)+4]!=TERMINATED))	then
 			multipush(R1,R2,R3,R4);
 			R1=3;

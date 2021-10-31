@@ -1,16 +1,14 @@
 [PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+13]=SP;
 SP=[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+11]*512-1;
 backup;
-[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+4]=READY;
 
 if([SYSTEM_STATUS_TABLE+5]!=0)	then
-	if([SYSTEM_STATUS_TABLE+1]==15)	then
-		if([SYSTEM_STATUS_TABLE+5]==SWAP_IN)	then
-			R1=2;
-			R2=[SYSTEM_STATUS_TABLE+1];
-			call MOD_6;
-		endif;
-		if([SYSTEM_STATUS_TABLE+5]==SWAP_OUT)	then
+	if(([SYSTEM_STATUS_TABLE+1]==15)&&([SYSTEM_STATUS_TABLE+5]==SWAP_IN))	then
+		R1=2;
+		R2=[SYSTEM_STATUS_TABLE+1];
+		call MOD_6;
+	else 
+		if(([SYSTEM_STATUS_TABLE+1]==15)&&([SYSTEM_STATUS_TABLE+5]==SWAP_OUT))	then
 			R1=1;
 			R2=[SYSTEM_STATUS_TABLE+1];
 			call MOD_6;
@@ -19,22 +17,24 @@ if([SYSTEM_STATUS_TABLE+5]!=0)	then
 else
 	if([SYSTEM_STATUS_TABLE+2]<MEM_LOW)	then
 		[SYSTEM_STATUS_TABLE+5]=SWAP_OUT;
-	endif;
-	if([SYSTEM_STATUS_TABLE+4]!=0)	then
-		alias index R0;
-		index=0;
-		while(index<16)	do
-			if(([PROCESS_TABLE+(index*16)+6]==1)&&([PROCESS_TABLE+(index*16)+0]>MAX_TICK))	then
-				break;
+	else
+		if([SYSTEM_STATUS_TABLE+4]!=0)	then
+			alias index R0;
+			index=0;
+			while(index<16)	do
+				if(([PROCESS_TABLE+(index*16)+6]==1)&&([PROCESS_TABLE+(index*16)+0]>MAX_TICK))	then
+					break;
+				endif;
+				index=index+1;
+			endwhile;
+			if((index<16)||([SYSTEM_STATUS_TABLE+2]>MEM_HIGH))	then
+				[SYSTEM_STATUS_TABLE+5]=SWAP_IN;
 			endif;
-			index=index+1;
-		endwhile;
-		if((index<16)||([SYSTEM_STATUS_TABLE+2]>MEM_HIGH))	then
-			[SYSTEM_STATUS_TABLE+5]=SWAP_IN;
 		endif;
 	endif;
 endif;
 
+[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+4]=READY;
 alias counter R0;
 counter=0;
 while(counter<=15)  do

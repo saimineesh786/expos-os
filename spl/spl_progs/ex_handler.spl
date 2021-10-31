@@ -9,8 +9,8 @@ if((EC == 1) || (EC == 2) || (EC == 3) ||([PROCESS_TABLE + ([SYSTEM_STATUS_TABLE
 
 	print [SYSTEM_STATUS_TABLE+1];
 	print EC;
-	print [PTBR + (2 * (EIP/512))] ;
-	print EIP%512;
+	print EIP;
+	
 	if(EC == 1)	then
 		print "Ilgl_Ins"; 
 	endif;
@@ -43,9 +43,9 @@ if((EC == 0) && (EPN >= 4) && (EPN <= 7))	then
 	R1 = 5;
 	R3 = [SYSTEM_STATUS_TABLE + 1];
 	call MOD_2;
+	multipop(R1,EIP,EC,EPN,EMA);
 	[PTBR + (2 * EPN)] = R0;
 	[PTBR + (2 * EPN) + 1] = "1100";
-	multipop(R1,EIP,EC,EPN,EMA);
 endif;
 
 if((EC == 0) &&(EPN >= 2) && (EPN <= 3))	then

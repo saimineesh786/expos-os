@@ -50,7 +50,9 @@ load --exec /home/saimineesh/myexpos/expl/expl_progs/s25_2.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/s25_3.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/s25_4.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/s27_4.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/s27_3.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/pgm1.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/pgm2.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/parent.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/mer_sq.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/mer_con.xsm
@@ -61,6 +63,10 @@ load --exec /home/saimineesh/myexpos/expl/expl_progs/ls.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/rm.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/cp.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/cat.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/merge.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/m_store.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/m_sort.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/m_merge.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/child.xsm
 load --idle /home/saimineesh/myexpos/expl/expl_progs/idle.xsm
 load --os /home/saimineesh/myexpos/spl/spl_progs/os_startup_13.xsm

@@ -104,6 +104,7 @@ if(funct_num==6)	then
 	index=DISK_SWAP_AREA;
 	while(index<DISK_SIZE)	do
 		if([DISK_FREE_LIST+index]==0)	then
+			[DISK_FREE_LIST+index]=1;
 			R0=index;
 			return;
 		endif;
