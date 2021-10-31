@@ -7,6 +7,7 @@ load --module 2 /home/saimineesh/myexpos/spl/spl_progs/mod_2.xsm
 load --module 3 /home/saimineesh/myexpos/spl/spl_progs/mod_3.xsm
 load --module 4 /home/saimineesh/myexpos/spl/spl_progs/mod_4.xsm
 load --module 5 /home/saimineesh/myexpos/spl/spl_progs/mod_5.xsm
+load --module 6 /home/saimineesh/myexpos/spl/spl_progs/mod_6.xsm
 load --module 7 /home/saimineesh/myexpos/spl/spl_progs/mod_7.xsm
 load --int=timer /home/saimineesh/myexpos/spl/spl_progs/timer_13.xsm
 load --int=console /home/saimineesh/myexpos/spl/spl_progs/console_int.xsm
@@ -48,6 +49,8 @@ load --exec /home/saimineesh/myexpos/expl/expl_progs/s25_1.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/s25_2.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/s25_3.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/s25_4.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/s27_4.xsm
+load --exec /home/saimineesh/myexpos/expl/expl_progs/pgm1.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/parent.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/mer_sq.xsm
 load --exec /home/saimineesh/myexpos/expl/expl_progs/mer_con.xsm

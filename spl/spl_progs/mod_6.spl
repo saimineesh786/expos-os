@@ -10,7 +10,7 @@ if(funct_num==1)	then
 	type1=-1;
 	type2=-1;
 	type3=-1;
-	while(index<16)	do
+	while(index<15)	do
 		alias state R7;
 		alias swap_status R8;
 		swap_status=[PROCESS_TABLE+(index*16)+6];

@@ -91,7 +91,6 @@ if(index < 60)	then
 	[PTBR+14] = -1;	
 	[PTBR + 15] = "0000";	
 	
-	
 	alias i1 R4;
 	i1 = 1;
 	while(i1 < 10)	do
@@ -102,6 +101,9 @@ if(index < 60)	then
 		endif;
 		i1 = i1 + 1;
 	endwhile;
+	
+	
+	
 	
 	[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+13] = 8*512;
 	[[PTBR + 16] * 512] = [([PTBR + 8] * 512) + 1];

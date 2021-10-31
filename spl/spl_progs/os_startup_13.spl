@@ -5,104 +5,81 @@ loadi(55,68);
 //idle-code
 loadi(69,11);
 
-PTBR = PAGE_TABLE_BASE;
+R0 = PAGE_TABLE_BASE;
 
-[PTBR+0] = 63;
-[PTBR+1] = "0100";
-[PTBR+2] = 64;
-[PTBR+3] = "0100";
+[R0+0] = 63;
+[R0+1] = "0100";
+[R0+2] = 64;
+[R0+3] = "0100";
 
-[PTBR+4] = -1;
-[PTBR+5] = "0000";
-[PTBR+6] = -1;
-[PTBR+7] = "0000";
+[R0+4] = -1;
+[R0+5] = "0000";
+[R0+6] = -1;
+[R0+7] = "0000";
 
-[PTBR+8] = 69;
-[PTBR+9] = "0100";
-[PTBR+10] = -1;
-[PTBR+11] = "0000";
-[PTBR+12] = -1;
-[PTBR+13] = "0000";
-[PTBR+14] = -1;
-[PTBR+15] = "0000";
+[R0+8] = 69;
+[R0+9] = "0100";
+[R0+10] = -1;
+[R0+11] = "0000";
+[R0+12] = -1;
+[R0+13] = "0000";
+[R0+14] = -1;
+[R0+15] = "0000";
 
-[PTBR+16] = 70;
-[PTBR+17] = "0110";
-[PTBR+18] = -1;
-[PTBR+19] = "0000";
+[R0+16] = 70;
+[R0+17] = "0110";
+[R0+18] = -1;
+[R0+19] = "0000";
 
-[PROCESS_TABLE+1]=0;
-[PROCESS_TABLE+3]=0;
-[PROCESS_TABLE+4]=RUNNING;
-[PROCESS_TABLE+9]=0;
-[PROCESS_TABLE+11]=76;
-[PROCESS_TABLE+13]=8*512;
-[PROCESS_TABLE+12]=0;
-[PROCESS_TABLE+14]=PTBR;
-[PROCESS_TABLE+15]=10;
+R0=PROCESS_TABLE;
+[R0+1]=0;
+[R0+3]=0;
+[R0+4]=RUNNING;
+[R0+9]=0;
+[R0+11]=76;
+[R0+13]=8*512;
+[R0+12]=0;
+[R0+14]=PAGE_TABLE_BASE;
+[R0+15]=10;
 [70*512]=[69*512+1];
 
-PTBR = PAGE_TABLE_BASE+(20*15);
+R0 = PAGE_TABLE_BASE+300;
 
-[PTBR+0] = 63;
-[PTBR+1] = "0100";
-[PTBR+2] = 64;
-[PTBR+3] = "0100";
+[R0+0] = 63;
+[R0+1] = "0100";
+[R0+2] = 64;
+[R0+3] = "0100";
 
-[PTBR+4] = -1;
-[PTBR+5] = "0000";
-[PTBR+6] = -1;
-[PTBR+7] = "0000";
+[R0+4] = -1;
+[R0+5] = "0000";
+[R0+6] = -1;
+[R0+7] = "0000";
 
-[PTBR+8] = 69;
-[PTBR+9] = "0100";
-[PTBR+10] = -1;
-[PTBR+11] = "0000";
-[PTBR+12] = -1;
-[PTBR+13] = "0000";
-[PTBR+14] = -1;
-[PTBR+15] = "0000";
+[R0+8] = 69;
+[R0+9] = "0100";
+[R0+10] = -1;
+[R0+11] = "0000";
+[R0+12] = -1;
+[R0+13] = "0000";
+[R0+14] = -1;
+[R0+15] = "0000";
 
-[PTBR+16] = 81;
-[PTBR+17] = "0110";
-[PTBR+18] = -1;
-[PTBR+19] = "0000";
+[R0+16] = 81;
+[R0+17] = "0110";
+[R0+18] = -1;
+[R0+19] = "0000";
 
-R0=PROCESS_TABLE+(15*16);
-[R0+1]=3;
+R0=PROCESS_TABLE+240;
+[R0+1]=15;
 [R0+3]=0;
 [R0+4]=CREATED;
 [R0+9]=0;
 [R0+11]=82;
-[R0+13]=8*512;
 [R0+12]=0;
-[R0+14]=PTBR;
+[R0+13]=8*512;
+[R0+14]=PAGE_TABLE_BASE+300;
 [R0+15]=10;
 [81*512]=[69*512+1];
-
-alias i R1;
-i = 0;
-while(i < 128)   do
-	if(i < 76)	then
-		[MEMORY_FREE_LIST + i] = 1;
-	else
-		[MEMORY_FREE_LIST + i] = 0;
-	endif;
-	i = i + 1;
-endwhile;
-
-alias counter R0;
-counter=3;
-while(counter<=15)  do
-    [PROCESS_TABLE+(counter*16)+4]=TERMINATED;
-    counter=counter+1;
-endwhile;
-
-[MEMORY_FREE_LIST+76]=1;
-[MEMORY_FREE_LIST+81]=1;
-[MEMORY_FREE_LIST+82]=1;
-[DISK_STATUS_TABLE+0] = 0;
-[TERMINAL_STATUS_TABLE+0]=0;
 
 SP=(76*512)-1;
 
