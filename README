@@ -1,4 +1,10 @@
-mod 0 ---- resource manager
+	EXPerimental Operating System
+---------------------------------------------
+Components of Kernel Code
+---------------------------------------------
+	Kernel Modules
+-----------------------------
+mod 0 ---- resource manager module 
 	-- 1 . Acquire Buffer
 	-- 2 . Release Buffer
 	-- 3 . Acquire Disk 
@@ -8,75 +14,103 @@ mod 0 ---- resource manager
 	-- 7 . Release Semaphore
 	-- 8 . Acquire Terminal
 	-- 9 . Release Terminal
-mod 1 ---- process manager
+	
+mod 1 ---- process manager module
 	-- 1 . Get PCB Entry
 	-- 2 . Free User Area Page
 	-- 3 . Exit Process
 	-- 4 . Free Page Table
 	-- 5 . Kill All
-mod 2 ---- memory manager
+	
+mod 2 ---- memory manager module
 	-- 1 . Get Free Page
-	-- 2 . Release Page // flag
+	-- 2 . Release Page
 	-- 3 . Get Free Block
 	-- 4 . Release Block
-	-- 5 . Get Code Page <disk_block_num,pid>
-mod 3 ---- file manager
+	-- 5 . Get Code Page
+	-- 6 . Get Swap Block
+	
+mod 3 ---- file manager module
 	-- 1 . Buffered Write
 	-- 2 . Buffered Read
-	-- 3 . open file
-	-- 4 . close file
-mod 4 ---- device manager
+	-- 3 . Open file
+	-- 4 . Close file
+	
+mod 4 ---- device manager module
 	-- 1 . Disk Store
 	-- 2 . Disk Load
 	-- 3 . Terminal Write
 	-- 4 . Terminal Read
-mod 5 ---- scheduler
-	-- scheduler if a process goes to Wait state or Timer Interrupt
+	
+mod 5 ---- context switch module
+
+mod 6 ---- pager module
+	-- 1 . Swap out
+	-- 2 . Swap in 
+	
 mod 7 ---- boot module
-	-- loads and links Init code, initalize Data structures Process Table, Page Table, Disk Status Table, Disk Map 		   Table,Per Process Table,Memory Free List, Terminal Status Table and System Status Table.
+
+	Interrupts
+-----------------------------
 int 4
-	-- create syscall
-	-- delete syscall
+	-- Create syscall
+	-- Delete syscall
 int 5
-	-- open syscall
-	-- close syscall
-	-- seek syscall
+	-- Open syscall
+	-- Close syscall
+	-- Ceek syscall
 int 6   
-	-- read syscall	
+	-- Read syscall	
 int 7	
-	-- write syscall
+	-- Write syscall
 int 8
-	-- fork syscall
+	-- Fork syscall
 int 9 
-	-- exec syscall
+	-- Exec syscall
 int 10
-	-- exit syscall
+	-- Exit syscall
 int 11
-	-- wait syscall
-	-- signal syscall
-	-- get_pid syscall
-	-- get_ppid syscall
+	-- Wait syscall
+	-- Signal syscall
+	-- Get_pid syscall
+	-- Get_ppid syscall
 int 12
 	-- Logout syscall
 int 13 
-	-- semget syscall
-	-- semrelease syscall
+	-- Semget syscall
+	-- Semrelease syscall
 int 14
-	-- semlock syscall
-	-- semunlock syscall 
+	-- Semlock syscall
+	-- Semunlock syscall 
 int 15
-	-- shutdown syscall // *** Shell pid changes in next stage ***//
+	-- Shutdown syscall
 int 16
-	-- newusr syscall
-	-- remusr syscall
-	-- setpwd syscall
-	-- getuname syscall
-	-- getuid syscall
+	-- Newusr syscall
+	-- Remusr syscall
+	-- Setpwd syscall
+	-- Getuname syscall
+	-- Getuid syscall
 int 17 
 	-- Login syscall
-int timer
-int console
-int disk
-exception_handler
-Note -- Never Mess Idle It shall be Only Infinite Loop No reads , No prints && No heap.
-	 XSM machine disables interrupts when executing in the kernel mode. Hence, the disk controller can raise an interrupt only when the machine is executing in the user mode. Hence the OS has to schedule "some process" even if all processess are waiting for disk/terminal interrupt - for otherwise, the device concerned will never be able to interrupt the processor. The IDLE process is precisely designed to take care of this and other similar situations. 
+
+Timer Interrupt
+
+Console Interrupt
+
+Disk Interrupt
+
+	Exceptions
+-----------------------------
+0 . Page Fault
+1 . Illegal Instruction
+2 . Illegal Memory Access
+3 . Arithmetic Exceptions
+4 . Stack Overflow
+
+	Kernel Functions & Processes
+--------------------------------------------
+1 . OS Startup Code
+0 . Idle Process
+1 . Login Process
+2 . Shell Process
+15 . Swapper Daemon Process

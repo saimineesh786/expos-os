@@ -7,21 +7,25 @@ if(funct_num==1)	then
 	alias type1 R4;
 	alias type2 R5;
 	alias type3 R6;
+	alias type3_tick R7;
+	type3_tick=-1;
 	type1=-1;
 	type2=-1;
 	type3=-1;
 	while(index<15)	do
 		alias state R7;
 		alias swap_status R8;
+		alias tick R9;
 		swap_status=[PROCESS_TABLE+(index*16)+6];
 		state=[PROCESS_TABLE+(index*16)+4];
+		tick=[PROCESS_TABLE+(index*16)+0];
 		if((type1==-1)&&(swap_status==0)&&(state==WAIT_PROCESS))	then
 			type1=index;
 		endif;
 		if((type2==-1)&&(swap_status==0)&&(state==WAIT_SEMAPHORE))	then
 			type2=index;
 		endif;
-		if((type3==-1)&&(swap_status==0)&&(state!=TERMINATED)&&(state!=ALLOCATED)&&(state!=RUNNING))	then
+		if((tick>type3_tick)&&(swap_status==0)&&(state!=TERMINATED)&&(state!=ALLOCATED)&&(state!=RUNNING))	then
 			type3=index;
 		endif;
 		index=index+1;

@@ -33,6 +33,7 @@ else
 		if(pword==[USER_TABLE+(uid*2)+1])	then
 			[PROCESS_TABLE+(2*16)+4]=CREATED;
 			[PROCESS_TABLE+(2*16)+3]=uid;
+			[PROCESS_TABLE+(2*16)+2]=1;
 			[base_pt+4]=WAIT_PROCESS;
 			[base_pt+5]=2;
 			[SYSTEM_STATUS_TABLE+0]=uid;
