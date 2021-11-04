@@ -28,6 +28,7 @@ if(syscallnum==17)	then
 			[base-index+1]=R4;
 			[([PTBR+(2*((userSP-1)/512))]*512)+(userSP-1)%512]=index;
 		else
+			[base-index]=-1;
 			[([PTBR+(2*((userSP-1)/512))]*512)+(userSP-1)%512]=-2;
 		endif;
 	else

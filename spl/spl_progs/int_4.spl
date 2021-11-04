@@ -18,8 +18,8 @@ if(syscallnum==1)	then
 	alias base R4;
 	alias index R5;
 	index=0;
-	alias first_free_page R6;
-	first_free_page=-1;
+	alias first_free_inode R6;
+	first_free_inode=-1;
 	alias uid R7;
 	uid=[base_pt+3];
 	while(index<60)	do
@@ -27,14 +27,14 @@ if(syscallnum==1)	then
 			[rt_val]=0;
 			break;
 		endif;
-		if(([INODE_TABLE+(index*16)+1]==-1)&&(first_free_page==-1))	then
-			first_free_page=index;
+		if(([INODE_TABLE+(index*16)+1]==-1)&&(first_free_inode==-1))	then
+			first_free_inode=index;
 		endif;
 		index=index+1;
 	endwhile;
 	if(index==60)	then
-		if(first_free_page!=-1)	then
-			base=INODE_TABLE+(first_free_page*16);
+		if(first_free_inode!=-1)	then
+			base=INODE_TABLE+(first_free_inode*16);
 			[base+0]=DATA;
 			[base+1]=fname;
 			[base+2]=0;
@@ -44,7 +44,7 @@ if(syscallnum==1)	then
 			[base+9]=-1;
 			[base+10]=-1;
 			[base+11]=-1;
-			base=ROOT_FILE+(first_free_page*8);
+			base=ROOT_FILE+(first_free_inode*8);
 			[base+0]=fname;
 			[base+1]=0;
 			[base+2]=DATA;
@@ -72,7 +72,6 @@ if(syscallnum==4)	then
 		if([base+0]==DATA)	then
 			if([base+4]==0)	then
 				if(([base_pt+3]!=1)&&([base+3]!=[base_pt+3]))	then
-					print "del";
 					[rt_val]=-1;
 					[base_pt+9]=0;
 					SP=[base_pt+13];
