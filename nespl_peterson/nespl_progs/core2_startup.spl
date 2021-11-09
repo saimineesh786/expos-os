@@ -1,0 +1,13 @@
+alias stk_page R0;
+alias code_page R1;
+
+stk_page=[PAGE_TABLE_BASE+(14*20)+16];
+code_page=[PAGE_TABLE_BASE+(14*20)+8];
+
+[stk_page*512]=[(code_page*512)+1];
+SP=4096;
+[SYSTEM_STATUS_TABLE+6]=14;
+PTBR=PAGE_TABLE_BASE+280;
+PTLR=10;
+
+ireturn;

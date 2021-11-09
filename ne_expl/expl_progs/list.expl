@@ -1,0 +1,49 @@
+type
+	node
+	{
+		int x;
+		node next;
+	}
+endtype
+
+decl
+	node head;
+enddecl
+
+int main(){
+	decl
+		int n,rt,k;
+		str fname;
+		node z,prev;
+	enddecl
+	begin
+		rt = exposcall("Write",-2,"n : ");
+		rt = exposcall("Read",-1,n);
+		rt = initialize();
+		head = null;
+		rt = exposcall("Write",-2,"Numbers : ");
+		prev = null;
+		while(n > 0)	do
+			rt = exposcall("Read",-1,k);
+			z = alloc();
+			z.x = k;
+			z.next = null;
+			if(head == null)	then
+				head = z;
+			else
+				prev.next = z;
+			endif;
+			prev = z;
+			n = n - 1;
+		endwhile;
+		z = head;
+		rt = exposcall("Write",-2,"Linked List : ");
+		while(z != null)	do
+			rt = exposcall("Write",-2,z.x);
+			rt = exposcall("Write",-2,"->");
+			z = z.next;
+		endwhile;
+		rt = exposcall("Write",-2,"null");
+		return 1;	
+	end
+}

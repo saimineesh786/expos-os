@@ -1,0 +1,129 @@
+alias funct_num R1;
+
+if(funct_num == 1)	then
+	[SYSTEM_STATUS_TABLE + 3] = [SYSTEM_STATUS_TABLE + 3] + 1;
+	while([SYSTEM_STATUS_TABLE + 2] == 0)	do
+		[PROCESS_TABLE + ([SYSTEM_STATUS_TABLE +(5*CORE)+ 1] * 16) + 4] = WAIT_MEM;
+		
+		backup;
+		R1=4;
+		R2=KERN_LOCK;
+		call MOD_8;
+		restore;
+		
+		multipush(R1);
+		call MOD_5;
+		multipop(R1);
+		
+		backup;
+		R1=1;
+		call MOD_8;
+		restore;
+	endwhile;
+	[SYSTEM_STATUS_TABLE + 3] = [SYSTEM_STATUS_TABLE + 3] - 1;
+	[SYSTEM_STATUS_TABLE + 2] = [SYSTEM_STATUS_TABLE + 2] - 1;
+	alias i1 R2;
+	i1 = 76;
+	while(i1<128)	do
+		if([MEMORY_FREE_LIST+i1]==0)	then
+			break;
+		endif;
+		i1 = i1 + 1;
+	endwhile;
+	if(i1<128)	then
+		[MEMORY_FREE_LIST + i1] = 1;
+		R0 = i1;
+	endif;
+endif;
+
+if(funct_num == 2)	then
+	alias page_num R2;
+	[MEMORY_FREE_LIST + page_num] = [MEMORY_FREE_LIST + page_num] - 1;
+	if([MEMORY_FREE_LIST + page_num] == 0)	then
+		[SYSTEM_STATUS_TABLE + 2] = [SYSTEM_STATUS_TABLE + 2] + 1;
+		alias i1 R3;
+		i1 = 0;
+		while(i1 < 16)	do
+			if([PROCESS_TABLE + (i1 * 16) + 4] == WAIT_MEM)	then
+				[PROCESS_TABLE + (i1 * 16) + 4] = READY;
+			endif;
+			i1 = i1 + 1;
+		endwhile;
+	endif;
+endif;
+
+if(funct_num==3)	then
+	alias disk_trav R2;
+	disk_trav=DISK_FREE_AREA;
+	while(disk_trav<DISK_SWAP_AREA)	do
+		if([DISK_FREE_LIST+disk_trav]==0)	then
+			[DISK_FREE_LIST+disk_trav]=1;
+			R0=disk_trav;
+			return;
+		endif;
+		disk_trav=disk_trav+1;
+	endwhile;
+	R0=-1;
+endif;
+
+if(funct_num == 4)	then
+	alias disk_block_num R2;
+	alias current_pid R3;
+	[DISK_FREE_LIST + disk_block_num] = [DISK_FREE_LIST + disk_block_num] - 1;
+endif;
+
+if(funct_num == 5)	then
+	alias disk_block_num R2;
+	alias current_pid R3;
+	alias i2 R4;
+	i2 = 0;
+	while(i2 < 160)	do
+		if(((i2%10)>3)&&((i2%10)<8))	then
+			if([DISK_MAP_TABLE+i2]==disk_block_num)	then
+				alias pno R5;
+				alias met_data R6;
+				pno = i2 / 10;
+				met_data = [PAGE_TABLE_BASE + (pno * 20) + (2 * (i2 % 10)) + 1];
+				if(([PAGE_TABLE_BASE + (pno * 20) + (2 * (i2 % 10))] != -1)&&((met_data == "0100")||(met_data == "0101")||(met_data == "0110")||(met_data == "0111")||(met_data == "1100")||(met_data == "1101")||(met_data == "1110")||(met_data == "1111")))	then
+					R7=[PAGE_TABLE_BASE+(pno*20)+(2*(i2 % 10))];
+					[MEMORY_FREE_LIST+R7] = [MEMORY_FREE_LIST+R7] + 1;
+					R0 = R7;
+					return;
+				endif; 
+			endif;
+		endif;
+		i2 = i2 + 1;
+	endwhile; 
+	
+	multipush(R1,R2,R3);
+	R1 = 1;
+	call MOD_2;
+	multipop(R1,R2,R3);
+	
+	multipush(R0);
+	multipush(R1,R2,R3);
+	R4 = disk_block_num;
+	R1 = 2;
+	R2 = current_pid;
+	R3 = R0;
+	call MOD_4;
+	multipop(R1,R2,R3);
+	multipop(R0);
+	
+endif;
+
+if(funct_num==6)	then
+	alias index R2;
+	index=DISK_SWAP_AREA;
+	while(index<DISK_SIZE)	do
+		if([DISK_FREE_LIST+index]==0)	then
+			[DISK_FREE_LIST+index]=1;
+			R0=index;
+			return;
+		endif;
+		index=index+1;
+	endwhile;
+	R0=-1;
+endif;
+
+return;

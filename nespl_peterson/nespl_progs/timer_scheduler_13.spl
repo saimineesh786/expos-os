@@ -1,0 +1,68 @@
+[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+13]=SP;
+SP=[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+11]*512-1;
+backup;
+
+alias current_pid R0;
+current_pid=[SYSTEM_STATUS_TABLE+1];
+
+alias process_table_entry R1;
+process_table_entry=PROCESS_TABLE+(current_pid*16);
+
+[process_table_entry+12]=SP%512;
+[process_table_entry+14]=PTBR;
+[process_table_entry+15]=PTLR;
+[process_table_entry+4]=READY;
+breakpoint;
+
+alias new_pid R2;
+alias counter R3;
+
+counter=current_pid+1;
+new_pid=-1;
+while(counter<=15)  do
+    if([PROCESS_TABLE+(counter*16)+4]==CREATED||[PROCESS_TABLE+(counter*16)+4]==READY)  then
+        new_pid=counter;
+        break;
+    endif;
+    counter=counter+1;
+endwhile;
+
+if(new_pid==-1) then
+    counter=1;
+    while(counter<=current_pid)    do
+        if([PROCESS_TABLE+(counter*16)+4]==CREATED||[PROCESS_TABLE+(counter*16)+4]==READY)  then
+            new_pid=counter;
+            break;
+        endif;
+        counter=counter+1;
+    endwhile;
+endif;
+
+if(new_pid==-1) then
+    new_pid=0;
+endif;
+
+alias new_process_entry R3;
+new_process_entry=PROCESS_TABLE+(new_pid*16);
+
+SP=[new_process_entry+11]*512+[new_process_entry+12];
+PTBR=[new_process_entry+14];
+PTLR=[new_process_entry+15];
+
+[SYSTEM_STATUS_TABLE+1]=new_pid;
+
+if([new_process_entry+4]==CREATED)	then
+	SP=[new_process_entry+13];
+	[new_process_entry+4]=RUNNING;
+	breakpoint;
+	ireturn;
+endif;
+
+[new_process_entry+4]=RUNNING;
+
+restore;
+SP=[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+1]*16)+13];
+breakpoint;
+ireturn;
+
+	

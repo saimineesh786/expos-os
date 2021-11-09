@@ -1,0 +1,209 @@
+alias funct_num R1;
+
+if(funct_num==1)	then
+	alias buff_no R2;
+	alias pid R3;
+	while([BUFFER_TABLE+(buff_no*4)+2]!=-1)	do
+		[PROCESS_TABLE+(pid*16)+4]=WAIT_BUFFER;
+		[PROCESS_TABLE+(pid*16)+5]=buff_no;
+		
+		backup;
+		R1=4;
+		R2=KERN_LOCK;
+		call MOD_8;
+		restore;
+		
+		backup;
+		call MOD_5;
+		restore;
+		
+		backup;
+		R1=1;
+		call MOD_8;
+		restore;
+		
+	endwhile;
+	[BUFFER_TABLE+(buff_no*4)+2]=pid;
+endif;
+
+if(funct_num==2)	then
+	alias buff_no R2;
+	alias pid R3;
+	if(pid==[BUFFER_TABLE+(buff_no*4)+2])	then
+		[BUFFER_TABLE+(buff_no*4)+2]=-1;
+		alias index R4;
+		index=0;
+		while(index<16)	do
+			if(([PROCESS_TABLE+(index*16)+4]==WAIT_BUFFER)&&([PROCESS_TABLE+(index*16)+5]==buff_no))	then
+				[PROCESS_TABLE+(index*16)+4]=READY;
+				[PROCESS_TABLE+(index*16)+5]="";
+			endif;
+			index=index+1;
+		endwhile;
+		R0=0;
+	else
+		R0=-1;
+	endif;
+endif;
+
+if(funct_num == 3)	then
+	alias current_pid R2;
+	while([DISK_STATUS_TABLE + 0] == 1)	do
+		[PROCESS_TABLE+(current_pid*16)+4]=WAIT_DISK;
+		
+		backup;
+		R1=4;
+		R2=KERN_LOCK;
+		call MOD_8;
+		restore;
+		
+		backup;
+		call MOD_5;
+		restore;
+		
+		backup;
+		R1=1;
+		call MOD_8;
+		restore;
+		
+	endwhile;
+	[DISK_STATUS_TABLE + 0] = 1;
+	[DISK_STATUS_TABLE + 4] = current_pid;
+endif;
+
+if(funct_num == 4)	then
+	alias inode_index R2;
+	alias pid R3;
+	while([FILE_STATUS_TABLE+(inode_index*4)+0]!=-1)	do
+		[PROCESS_TABLE+(pid*16)+4]=WAIT_FILE;
+		[PROCESS_TABLE+(pid*16)+5]=inode_index;
+		
+		backup;
+		R1=4;
+		R2=KERN_LOCK;
+		call MOD_8;
+		restore;
+		
+		backup;
+		call MOD_5;
+		restore;
+		
+		backup;
+		R1=1;
+		call MOD_8;
+		restore;
+		
+	endwhile;
+	if([INODE_TABLE+(inode_index*16)+1]==-1)	then
+		R0=-1;
+	else
+		[FILE_STATUS_TABLE+(inode_index*4)+0]=pid;
+		R0=0;
+	endif;
+endif;
+
+if(funct_num == 5)	then
+	alias inode_index R2;
+	alias pid R3;
+	if(pid!=[FILE_STATUS_TABLE+(inode_index*4)+0])	then
+		R0=-1;
+	else
+		[FILE_STATUS_TABLE+(inode_index*4)+0]=-1;
+		alias index R4;
+		index=0;
+		while(index<16)	do
+			if(([PROCESS_TABLE+(index*16)+4]==WAIT_FILE)&&([PROCESS_TABLE+(index*16)+5]==inode_index))	then
+				[PROCESS_TABLE+(index*16)+4]=READY;
+				[PROCESS_TABLE+(index*16)+5]="";
+			endif;
+			index=index+1;
+		endwhile;
+		R0=0;
+	endif;
+endif;
+
+if(funct_num==6)	then
+	alias current_pid R2;
+	alias index R3;
+	index=0;
+	while(index<32)	do
+		if([SEMAPHORE_TABLE+(index*4)+1]==0)	then
+			break;
+		endif;
+		index=index+1;
+	endwhile;
+	if(index<32)	then
+		[SEMAPHORE_TABLE+(index*4)+1]=1;
+		[SEMAPHORE_TABLE+(index*4)+0]=-1;
+		R0=index;
+	else
+		R0=-1;
+	endif;
+endif;
+
+if(funct_num==7)	then
+	alias semindex R2;
+	alias pid R3;
+	if((semindex>=0)&&(semindex<32))	then
+		if([SEMAPHORE_TABLE+(semindex*4)+0]==pid)	then
+			[SEMAPHORE_TABLE+(semindex*4)+0]=-1;
+			alias index R4;
+			index=0;
+			while(index<16)	do
+				if(([PROCESS_TABLE+(index*16)+4]==WAIT_SEMAPHORE)&&([PROCESS_TABLE+(index*16)+5]==semindex))	then
+					[PROCESS_TABLE+(index*16)+4]=READY;
+					[PROCESS_TABLE+(index*16)+5]="";
+				endif;
+				index=index+1;
+			endwhile;
+		endif;
+		[SEMAPHORE_TABLE+(semindex*4)+1]=[SEMAPHORE_TABLE+(semindex*4)+1]-1;
+		R0=0;
+	else
+		R0=-1;
+	endif;
+endif;
+
+if( funct_num == 8 )	then
+	alias current_pid R2;
+	while( [TERMINAL_STATUS_TABLE + 0] == 1)	do
+		[PROCESS_TABLE+(current_pid*16)+4]=WAIT_TERMINAL;
+		
+		backup;
+		R1=4;
+		R2=KERN_LOCK;
+		call MOD_8;
+		restore;
+		
+		backup;
+		call MOD_5;
+		restore;
+		
+		backup;
+		R1=1;
+		call MOD_8;
+		restore;
+		
+	endwhile;
+	[TERMINAL_STATUS_TABLE + 0]=1;
+	[TERMINAL_STATUS_TABLE + 1]=current_pid;
+endif;
+
+if( funct_num == 9 )	then
+	alias current_pid R2;
+	if( current_pid == [TERMINAL_STATUS_TABLE+1])	then
+		[TERMINAL_STATUS_TABLE+0]=0;
+		alias pid R3;
+		pid=0;
+		while( pid <= 15 )	do
+			if( [PROCESS_TABLE+(pid*16)+4] == WAIT_TERMINAL )	then
+				[PROCESS_TABLE+(pid*16)+4] = READY;
+			endif;
+			pid=pid+1;
+		endwhile;
+		R0=0;
+	else
+		R0=-1;
+	endif;
+endif;
+return;

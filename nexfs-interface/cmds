@@ -1,0 +1,76 @@
+fdisk
+load --library /home/saimineesh/mynexpos/expl/library.lib
+load --exhandler /home/saimineesh/mynexpos/nespl/nespl_progs/ex_handler.xsm
+load --module 0 /home/saimineesh/mynexpos/nespl/nespl_progs/mod_0.xsm
+load --module 1 /home/saimineesh/mynexpos/nespl/nespl_progs/mod_1.xsm
+load --module 2 /home/saimineesh/mynexpos/nespl/nespl_progs/mod_2.xsm
+load --module 3 /home/saimineesh/mynexpos/nespl/nespl_progs/mod_3.xsm
+load --module 4 /home/saimineesh/mynexpos/nespl/nespl_progs/mod_4.xsm
+load --module 5 /home/saimineesh/mynexpos/nespl/nespl_progs/mod_5.xsm
+load --module 6 /home/saimineesh/mynexpos/nespl/nespl_progs/mod_6.xsm
+load --module 7 /home/saimineesh/mynexpos/nespl/nespl_progs/mod_7.xsm
+load --module 8 /home/saimineesh/mynexpos/nespl/nespl_progs/mod_8.xsm
+load --int=timer /home/saimineesh/mynexpos/nespl/nespl_progs/timer_13.xsm
+load --int=console /home/saimineesh/mynexpos/nespl/nespl_progs/console_int.xsm
+load --int=disk /home/saimineesh/mynexpos/nespl/nespl_progs/disk_interrupt.xsm
+load --int=4 /home/saimineesh/mynexpos/nespl/nespl_progs/int_4.xsm
+load --int=5 /home/saimineesh/mynexpos/nespl/nespl_progs/int_5.xsm
+load --int=6 /home/saimineesh/mynexpos/nespl/nespl_progs/int_6.xsm
+load --int=7 /home/saimineesh/mynexpos/nespl/nespl_progs/int_7.xsm
+load --int=8 /home/saimineesh/mynexpos/nespl/nespl_progs/int_8.xsm
+load --int=9 /home/saimineesh/mynexpos/nespl/nespl_progs/int_9.xsm
+load --int=10 /home/saimineesh/mynexpos/nespl/nespl_progs/int_10.xsm
+load --int=11 /home/saimineesh/mynexpos/nespl/nespl_progs/int_11.xsm
+load --int=12 /home/saimineesh/mynexpos/nespl/nespl_progs/int_12.xsm
+load --int=13 /home/saimineesh/mynexpos/nespl/nespl_progs/int_13.xsm
+load --int=14 /home/saimineesh/mynexpos/nespl/nespl_progs/int_14.xsm
+load --int=15 /home/saimineesh/mynexpos/nespl/nespl_progs/int_15.xsm
+load --int=16 /home/saimineesh/mynexpos/nespl/nespl_progs/int_16.xsm
+load --int=17 /home/saimineesh/mynexpos/nespl/nespl_progs/int_17.xsm
+load --shell /home/saimineesh/mynexpos/expl/expl_progs/ex_shell.xsm
+load --init /home/saimineesh/mynexpos/expl/expl_progs/login.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/odd.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/fc.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/fc2.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/init_20.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/prog2.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/gcd.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/sort.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/lu.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/ru.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/list.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/prog3.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/fork3.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/fork3_n.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/s22.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/rv_read.xsm
+load --data /home/saimineesh/mynexpos/expl/expl_progs/sample.dat
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/pid.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/s25_1.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/s25_2.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/s25_3.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/s25_4.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/s27_4.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/s27_3.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/s27_2.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/s27_1.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/pgm1.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/pgm2.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/parent.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/mer_sq.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/mer_con.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/fread_1.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/fread.xsm
+load --data /home/saimineesh/mynexpos/expl/expl_progs/nums.dat
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/ls.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/rm.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/cp.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/cat.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/merge.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/m_store.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/m_sort.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/m_merge.xsm
+load --exec /home/saimineesh/mynexpos/expl/expl_progs/child.xsm
+load --idle /home/saimineesh/mynexpos/expl/expl_progs/idle.xsm
+load --os=secondary /home/saimineesh/mynexpos/nespl/nespl_progs/core2_startup.xsm
+load --os=primary /home/saimineesh/mynexpos/nespl/nespl_progs/os_startup_13.xsm

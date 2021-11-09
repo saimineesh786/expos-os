@@ -1,0 +1,90 @@
+alias userSP R0;
+userSP=SP;
+
+alias base_pt R1;
+base_pt=PROCESS_TABLE+([SYSTEM_STATUS_TABLE+(5*CORE)+1]*16);
+
+alias rt_val R2;
+rt_val=([PTBR+(2*((userSP-1)/512))]*512)+(userSP-1)%512;
+
+[base_pt+9]=21;
+[base_pt+13] = SP;
+SP=([base_pt+11]*512)-1;
+
+backup;
+R1=1;
+call MOD_8;
+restore;
+
+if([base_pt+1]!=2)	then
+	[rt_val]=-1;
+else
+	if([base_pt+3]!=1)	then
+		[rt_val]=-1;
+	else	
+		reset;
+		[29577]=0;
+		[29581]=0;
+		[29582]=0;
+		multipush(R0,R1,R2);
+		R2=[base_pt+1];
+		R1=5;
+		call MOD_1;
+		multipop(R0,R1,R2);
+		
+		alias index R4;
+		index=0;
+		while(index<4)	do
+			if(([BUFFER_TABLE+(index*4)+0]!=-1)&&([BUFFER_TABLE+(index*4)+1]==1))	then
+				multipush(R0,R1,R2,R4);
+				R1=1;
+				R2=[SYSTEM_STATUS_TABLE+(5*CORE)+1];
+				R3=71+([BUFFER_TABLE+(index*4)+0]%4);
+				R4=[BUFFER_TABLE+(index*4)+0];
+				call MOD_4;
+				multipop(R0,R1,R2,R4);
+			endif;
+			index=index+1;
+		endwhile;
+		
+		multipush(R0,R1,R2,R4);
+		R1=1;
+		R2=[SYSTEM_STATUS_TABLE+(5*CORE)+1];
+		R3=59;
+		R4=3;
+		call MOD_4;
+		multipop(R0,R1,R2,R4);
+		multipush(R0,R1,R2,R4);
+		R1=1;
+		R2=[SYSTEM_STATUS_TABLE+(5*CORE)+1];
+		R3=60;
+		R4=4;
+		call MOD_4;
+		multipop(R0,R1,R2,R4);
+		multipush(R0,R1,R2,R4);
+		R1=1;
+		R2=[SYSTEM_STATUS_TABLE+(5*CORE)+1];
+		R3=62;
+		R4=5;
+		call MOD_4;
+		multipop(R0,R1,R2,R4);
+		multipush(R0,R1,R2,R4);
+		R1=1;
+		R2=[SYSTEM_STATUS_TABLE+(5*CORE)+1];
+		R3=61;
+		R4=2;
+		call MOD_4;
+		multipop(R0,R1,R2,R4);
+		halt;
+	endif;
+endif;
+
+backup;	
+R1=4;
+R2=KERN_LOCK;
+call MOD_8;
+restore;
+
+[base_pt+9]=0;
+SP=[base_pt+13];
+ireturn;

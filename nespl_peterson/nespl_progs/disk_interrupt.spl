@@ -1,0 +1,30 @@
+[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+(5*CORE)+1]*16)+13] = SP;
+SP = [PROCESS_TABLE+([SYSTEM_STATUS_TABLE+(5*CORE)+1]*16)+11] * 512 - 1;
+
+backup;
+R1=1;
+call MOD_8;
+restore;
+
+backup;
+
+[DISK_STATUS_TABLE + 0] = 0;
+alias i1 R0;
+
+i1=0;
+while(i1 < 16)	do
+	if([PROCESS_TABLE + (i1 * 16) + 4] == WAIT_DISK)	then
+		[PROCESS_TABLE + (i1 * 16) + 4] = READY;
+	endif;
+	i1 = i1 + 1;
+endwhile;
+
+restore;
+
+backup;
+R1=4;
+call MOD_8;
+restore;
+
+SP = [PROCESS_TABLE+([SYSTEM_STATUS_TABLE+(5*CORE)+1]*16)+13];
+ireturn;

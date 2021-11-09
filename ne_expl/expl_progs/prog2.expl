@@ -1,0 +1,15 @@
+int main(){
+    decl
+        int even;
+        int rt;
+    enddecl
+    begin
+        rt=exposcall("Write",-2,"even");
+        even=2;
+        while(even<=100) do
+            rt=exposcall("Write",-2,even);
+            even=even+2;
+        endwhile;
+        return 0;
+    end
+}

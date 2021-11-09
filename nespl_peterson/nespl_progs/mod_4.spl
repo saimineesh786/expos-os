@@ -1,0 +1,105 @@
+alias funct_num R1;
+alias current_pid R2;
+
+if(funct_num==1)	then
+	alias phy_page_num R3;
+	alias disk_block_num R4;
+	multipush(R1,R2,R3,R4);
+	R1 = 3;
+	R2 = current_pid;
+	call MOD_0;
+	multipop(R1,R2,R3,R4);	
+	[DISK_STATUS_TABLE + 1] = 1;
+	[DISK_STATUS_TABLE + 2] = phy_page_num;
+	[DISK_STATUS_TABLE + 3] = disk_block_num;
+	store(phy_page_num,disk_block_num);
+	[PROCESS_TABLE + (current_pid * 16) + 4] = WAIT_DISK;
+	
+	backup;
+	R1=4;
+	R2=KERN_LOCK;
+	call MOD_8;
+	restore;
+	
+	multipush(R1,R2,R3,R4);
+	call MOD_5;
+	multipop(R1,R2,R3,R4);
+	
+	backup;
+	R1=1;
+	call MOD_8;
+	restore;
+endif;
+
+if( funct_num == 2 )	then
+	alias phy_page_num R3;
+	alias disk_block_num R4;
+	multipush(R1,R2,R3,R4);
+	R1 = 3;
+	R2 = current_pid;
+	call MOD_0;
+	multipop(R1,R2,R3,R4);
+	[DISK_STATUS_TABLE + 1] = 0;
+	[DISK_STATUS_TABLE + 2] = phy_page_num;
+	[DISK_STATUS_TABLE + 3] = disk_block_num;
+	load(phy_page_num,disk_block_num);
+	[PROCESS_TABLE + (current_pid * 16) + 4] = WAIT_DISK;
+	
+	backup;
+	R1=4;
+	R2=KERN_LOCK;
+	call MOD_8;
+	restore;
+	
+	multipush(R1,R2,R3,R4);
+	call MOD_5;
+	multipop(R1,R2,R3,R4);
+	
+	backup;
+	R1=1;
+	call MOD_8;
+	restore;
+endif;
+
+if ( funct_num == 3 )	then
+	multipush(R1,R2,R3);
+	R1 = 8;
+	R2 = current_pid;
+	call MOD_0;
+	multipop(R1,R2,R3);
+	print R3; 
+	multipush(R1,R2,R3);
+	R1=9;
+	R2=current_pid;
+	call MOD_0;
+	multipop(R1,R2,R3);
+endif;
+
+if( funct_num == 4 )	then
+	multipush(R1,R2,R3);
+	R1 = 8;
+	R2 = current_pid;
+	call MOD_0;
+	multipop(R1,R2,R3);
+	read;
+	[PROCESS_TABLE+(current_pid*16)+4] = WAIT_TERMINAL;
+	
+	backup;
+	R1=4;
+	R2=KERN_LOCK;
+	call MOD_8;
+	restore;
+	
+	multipush(R1,R2,R3);
+	call MOD_5;
+	multipop(R1,R2,R3);
+	
+	backup;
+	R1=1;
+	call MOD_8;
+	restore;
+	
+	alias word R3;
+	[[PAGE_TABLE_BASE+(current_pid*20)+(2*(word/512))]*512+(word%512)] = [PROCESS_TABLE+(current_pid*16)+8];
+endif;
+return ;

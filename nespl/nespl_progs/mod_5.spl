@@ -1,0 +1,120 @@
+multipush(BP);
+
+backup;
+R1=2;
+call MOD_8;
+restore;
+
+alias current_pid R0;
+current_pid=[SYSTEM_STATUS_TABLE+(5*CORE)+1];
+
+alias process_table_entry R1;
+process_table_entry=PROCESS_TABLE+(current_pid*16);
+
+[process_table_entry+12]=SP%512;
+[process_table_entry+14]=PTBR;
+[process_table_entry+15]=PTLR;
+
+alias new_pid R2;
+
+if(CORE==0)	then
+	if([SYSTEM_STATUS_TABLE+5]!=0)	then
+		R3=[PROCESS_TABLE+(15*16)+4];
+		if((R3==READY)||(R3==CREATED)||(R3==RUNNING))	then
+			new_pid=15;
+		else
+			new_pid=0;
+		endif;
+	else
+		if(([SYSTEM_STATUS_TABLE+7]==1)&&([SYSTEM_STATUS_TABLE+6]!=14))	then
+			new_pid=0;
+		else
+			alias counter R3;
+			counter=current_pid+1;
+			new_pid=-1;
+			while(counter<14)  do
+	    		if(([SYSTEM_STATUS_TABLE+6]!=counter)&&([PROCESS_TABLE+(counter*16)+6]!=1)&&([PROCESS_TABLE+(counter*16)+4]==CREATED||[PROCESS_TABLE+(counter*16)+4]==READY))  then
+	        		new_pid=counter;
+	       		break;
+	    		endif;
+	    		counter=counter+1;
+			endwhile;
+	
+			if(new_pid==-1) then
+	    		counter=1;
+	    		while((counter<=current_pid)&&(counter<14))    do
+	        	if(([SYSTEM_STATUS_TABLE+6]!=counter)&&([PROCESS_TABLE+(counter*16)+6]!=1)&&([PROCESS_TABLE+(counter*16)+4]==CREATED||[PROCESS_TABLE+(counter*16)+4]==READY))  then
+	       	    	new_pid=counter;
+	        	    	break;
+	        	endif;
+	        	counter=counter+1;
+	    		endwhile;
+			endif;
+		endif;
+		if(new_pid==-1) then
+	    		new_pid=0;
+		endif;
+	endif;
+else
+	if(([SYSTEM_STATUS_TABLE+5]!=0)||([SYSTEM_STATUS_TABLE+7]==1))	then
+		new_pid=14;
+	else
+		alias counter R3;
+		counter=current_pid+1;
+		new_pid=-1;
+		while(counter<14)  do
+    		if(([SYSTEM_STATUS_TABLE+1]!=counter)&&([PROCESS_TABLE+(counter*16)+6]!=1)&&([PROCESS_TABLE+(counter*16)+4]==CREATED||[PROCESS_TABLE+(counter*16)+4]==READY))  then
+        		new_pid=counter;
+       		break;
+    		endif;
+    		counter=counter+1;
+		endwhile;
+
+		if(new_pid==-1) then
+    		counter=3;
+    		while((counter<=current_pid)&&(counter<14))    do
+        		if(([SYSTEM_STATUS_TABLE+1]!=counter)&&([PROCESS_TABLE+(counter*16)+6]!=1)&&([PROCESS_TABLE+(counter*16)+4]==CREATED||[PROCESS_TABLE+(counter*16)+4]==READY))  then
+       	    	new_pid=counter;
+        	    	break;
+        		endif;
+        		counter=counter+1;
+    		endwhile;
+		endif;
+	
+		if(new_pid==-1) then
+    			new_pid=14;
+		endif;
+	endif;
+endif;
+
+[SYSTEM_STATUS_TABLE+(5*CORE)+1]=new_pid;
+PTBR=[PROCESS_TABLE+(new_pid*16)+14];
+PTLR=[PROCESS_TABLE+(new_pid*16)+15];
+
+if([PROCESS_TABLE+(new_pid*16)+4]==CREATED) then
+    backup;
+    R1=4;
+    R2=SCHED_LOCK;
+    call MOD_8;
+    restore;
+    SP=[PROCESS_TABLE+(new_pid*16)+13];
+    BP=[[PROCESS_TABLE+(new_pid*16)+11]*512];
+    [PROCESS_TABLE+(new_pid*16)+4]=RUNNING;
+    [PROCESS_TABLE+(new_pid*16)+9]=0;
+    ireturn;
+endif;
+
+
+[PROCESS_TABLE+(new_pid*16)+4]=RUNNING;
+SP=[PROCESS_TABLE+(new_pid*16)+11]*512+[PROCESS_TABLE+(new_pid*16)+12];
+
+
+multipop(BP);
+
+backup;
+R1=4;
+R2=SCHED_LOCK;
+call MOD_8;
+restore;
+
+return;

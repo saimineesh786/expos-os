@@ -1,0 +1,87 @@
+alias syscallnum R1;
+alias userSP R0;
+userSP=SP;
+syscallnum=[([PTBR+(2*((userSP-5)/512))]*512)+(userSP-5)%512];
+[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+(5*CORE)+1]*16)+9]=syscallnum;
+[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+(5*CORE)+1]*16)+13] = SP;
+SP=([PROCESS_TABLE+([SYSTEM_STATUS_TABLE+(5*CORE)+1]*16)+11]*512)-1;
+
+backup;
+R1=1;
+call MOD_8;
+restore;
+
+if(syscallnum==19)	then
+	alias index R2;
+	index=[([PTBR+(2*((userSP-4)/512))]*512)+(userSP-4)%512];
+	alias base R3;
+	base=([PROCESS_TABLE+([SYSTEM_STATUS_TABLE+(5*CORE)+1]*16)+11]+1)*512;
+	if(((index%2)==0)&&(index>0)&&(index<=16)&&([base-index]==1))	then
+		alias semindex R4;
+		semindex=[base-index+1];
+		while(([SEMAPHORE_TABLE+(semindex*4)+0]!=-1)&&([SEMAPHORE_TABLE+(semindex*4)+0]!=[SYSTEM_STATUS_TABLE+(5*CORE)+1]))	do
+			[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+(5*CORE)+1]*16)+4]=WAIT_SEMAPHORE;
+			[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+(5*CORE)+1]*16)+5]=semindex;
+			
+			backup;	
+			R1=4;
+			R2=KERN_LOCK;
+			call MOD_8;
+			restore;
+			
+			multipush(R0,R1,R2,R3,R4);
+			call MOD_5;
+			multipop(R0,R1,R2,R3,R4);
+			
+			backup;
+			R1=1;
+			call MOD_8;
+			restore;
+			
+		endwhile;
+		[SEMAPHORE_TABLE+(semindex*4)+0]=[SYSTEM_STATUS_TABLE+(5*CORE)+1];
+		[([PTBR+(2*((userSP-1)/512))]*512)+(userSP-1)%512]=0;
+	else
+		[([PTBR+(2*((userSP-1)/512))]*512)+(userSP-1)%512]=-1;
+	endif;
+endif;
+
+if(syscallnum==20)	then
+	alias index R2;
+	index=[([PTBR+(2*((userSP-4)/512))]*512)+(userSP-4)%512];
+	alias base R3;
+	base=([PROCESS_TABLE+([SYSTEM_STATUS_TABLE+(5*CORE)+1]*16)+11]+1)*512;
+	if(((index%2)==0)&&(index>0)&&(index<=16)&&([base-index]==1))	then
+		alias semindex R4;
+		semindex=[base-index+1];
+		if([SEMAPHORE_TABLE+(semindex*4)+0]!=-1)	then
+			if([SEMAPHORE_TABLE+(semindex*4)+0]==[SYSTEM_STATUS_TABLE+(5*CORE)+1])	then
+				[SEMAPHORE_TABLE+(semindex*4)+0]=-1;
+				alias index R5;
+				index=0;
+				while(index<16)	do
+					if(([PROCESS_TABLE+(index*16)+4]==WAIT_SEMAPHORE)&&([PROCESS_TABLE+(index*16)+5]==semindex))	then
+						[PROCESS_TABLE+(index*16)+4]=READY;
+						[PROCESS_TABLE+(index*16)+5]="";
+					endif;
+				index=index+1;
+				endwhile;
+				[([PTBR+(2*((userSP-1)/512))]*512)+(userSP-1)%512]=0;
+			else
+				[([PTBR+(2*((userSP-1)/512))]*512)+(userSP-1)%512]=-2;	
+			endif;
+		endif;
+	else
+		[([PTBR+(2*((userSP-1)/512))]*512)+(userSP-1)%512]=-1;
+	endif;
+endif;
+
+backup;	
+R1=4;
+R2=KERN_LOCK;
+call MOD_8;
+restore;
+	
+[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+(5*CORE)+1]*16)+9]=0;
+SP=[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+(5*CORE)+1]*16)+13];
+ireturn;

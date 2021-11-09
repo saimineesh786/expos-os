@@ -8,7 +8,7 @@ if(funct_num==1)	then
 	alias type2 R5;
 	alias type3 R6;
 	alias type3_tick R7;
-	type3_tick=-1;
+	type3_tick=0;
 	type1=-1;
 	type2=-1;
 	type3=-1;

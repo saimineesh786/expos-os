@@ -1,0 +1,189 @@
+alias funct_num R1;
+
+if(funct_num==1)	then
+	alias disk_block_no R2;
+	alias offset R3;
+	alias word R4;
+	alias buff_no R5;
+	buff_no=(disk_block_no%4);
+	backup;
+	R1=1;
+	R2=buff_no;
+	R3=[SYSTEM_STATUS_TABLE+(5*CORE)+1];
+	call MOD_0;
+	restore;
+	alias base R6;
+	base=BUFFER_TABLE+(buff_no*4);
+	if([base]!=disk_block_no)	then
+		if([base+1]==1)	then
+			backup;
+			R1=1;
+			R2=[SYSTEM_STATUS_TABLE+(5*CORE)+1];
+			R3=71+buff_no;
+			R4=[base];
+			call MOD_4;
+			restore;
+			[base+0]=-1;
+		endif;
+		multipush(R1,R2,R3,R4,R5,R6);
+		R1=2;
+		R4=disk_block_no;
+		R2=[SYSTEM_STATUS_TABLE+(5*CORE)+1];
+		R3=71+buff_no;
+		call MOD_4;
+		multipop(R1,R2,R3,R4,R5,R6);
+		[base+0]=disk_block_no;
+		[base+1]=0;
+	endif;
+	[((71+buff_no)*512)+offset]=word;
+	[base+1]=1;
+	multipush(R1);
+	R1=2;
+	R2=buff_no;
+	R3=[SYSTEM_STATUS_TABLE+(5*CORE)+1];
+	call MOD_0;
+	multipop(R1);
+endif;
+
+if(funct_num==2)	then
+	alias disk_block_no R2;
+	alias offset R3;
+	alias word R4;
+	alias buff_no R5;
+	buff_no=(disk_block_no%4);
+	multipush(R1,R2,R3,R4,R5);
+	R1=1;
+	R2=buff_no;
+	R3=[SYSTEM_STATUS_TABLE+(5*CORE)+1];
+	call MOD_0;
+	multipop(R1,R2,R3,R4,R5);
+	alias base R6;
+	base=BUFFER_TABLE+(buff_no*4);
+	if([base]!=disk_block_no)	then
+		if([base+1]==1)	then
+			multipush(R1,R2,R3,R4,R5,R6);
+			R1=1;
+			R2=[SYSTEM_STATUS_TABLE+(5*CORE)+1];
+			R3=71+buff_no;
+			R4=[base];
+			call MOD_4;
+			multipop(R1,R2,R3,R4,R5,R6);
+			[base+0]=-1;
+		endif;
+		multipush(R1,R2,R3,R4,R5,R6);
+		R1=2;
+		R4=disk_block_no;
+		R2=[SYSTEM_STATUS_TABLE+(5*CORE)+1];
+		R3=71+buff_no;
+		call MOD_4;
+		multipop(R1,R2,R3,R4,R5,R6);
+		[base+0]=disk_block_no;
+		[base+1]=0;
+	endif;
+	[word]=[((71+buff_no)*512)+offset];
+	multipush(R1);
+	R1=2;
+	R2=buff_no;
+	R3=[SYSTEM_STATUS_TABLE+(5*CORE)+1];
+	call MOD_0;
+	multipop(R1);
+endif;
+
+if(funct_num==4)	then
+	alias oft_index R2;
+	alias inode_index R3;
+	alias base_oft R4;
+	base_oft=OPEN_FILE_TABLE+(oft_index*4);
+	inode_index=[base_oft+0];
+	[base_oft+1]=[base_oft+1]-1;
+	if([base_oft+1]==0)	then
+		[base_oft+0]=-1;
+		[base_oft+1]=0;
+		[base_oft+2]=0;
+		alias base_fst R5;
+		base_fst=FILE_STATUS_TABLE+(inode_index*4);
+		if([INODE_TABLE+(inode_index*16)+1]!="root")	then
+			[base_fst+1]=[base_fst+1]-1;
+		endif;
+		if([base_fst+1]==0)	then
+			[base_fst+1]=-1;
+		endif;
+	endif;
+endif;
+
+if(funct_num==3)	then
+	alias fname R2;
+	alias index R3;
+	index=0;
+	while(index<60)	do
+		if([INODE_TABLE+(index*16)+1]==fname)	then
+			break;
+		endif;
+		index=index+1;
+	endwhile;
+	if(index<60)	then
+		multipush(R1,R2,R3);
+		R1=4;
+		R2=index;
+		R3=[SYSTEM_STATUS_TABLE+(5*CORE)+1];
+		call MOD_0;
+		multipop(R1,R2,R3);
+		if(R0!=-1)	then
+			if([INODE_TABLE+(index*16)+0]==EXEC)	then
+				multipush(R1,R2,R3);
+				R1=5;
+				R2=index;
+				R3=[SYSTEM_STATUS_TABLE+(5*CORE)+1];
+				call MOD_0;
+				multipop(R1,R2,R3);
+				R0=-1;
+			else 
+				alias oft_index R4;
+				oft_index=0;
+				while(oft_index<32)	do
+					if([OPEN_FILE_TABLE+(oft_index*4)+0]==-1)	then
+						break;
+					endif;
+					oft_index=oft_index+1;
+				endwhile;
+				if(oft_index<32)	then
+					alias base_oft R5;
+					base_oft=OPEN_FILE_TABLE+(oft_index*4);
+					alias fst_index R6;
+					fst_index=FILE_STATUS_TABLE+(index*4);
+					if(fname=="root")	then
+						[base_oft+0]=INODE_ROOT;
+					else
+						[base_oft+0]=index;
+						if([fst_index+1]==-1)	then
+							[fst_index+1]=1;
+						else
+							[fst_index+1]=[fst_index+1]+1;
+						endif;
+					endif;
+					[base_oft+1]=1;
+					[base_oft+2]=0;
+					multipush(R4);
+					R1=5;
+					R2=index;
+					R3=[SYSTEM_STATUS_TABLE+(5*CORE)+1];
+					call MOD_0;
+					multipop(R4);
+					R0=R4;
+				else
+					R1=5;
+					R2=index;
+					R3=[SYSTEM_STATUS_TABLE+(5*CORE)+1];
+					call MOD_0;
+					R0=-2;
+				endif;
+			endif;
+		endif;
+	else
+		R0=-1;
+	endif;
+endif;
+
+
+
+return;

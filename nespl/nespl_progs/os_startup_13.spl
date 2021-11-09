@@ -1,0 +1,111 @@
+//boot-module
+loadi(54,67);
+loadi(55,68);
+
+//idle-code
+loadi(69,11);
+
+//secondary-bootstrap-code
+loadi(128,512);
+loadi(129,513);
+
+//mod=8
+loadi(132,516);
+loadi(133,517);
+
+alias base R0;
+alias index R1;
+R2=0;
+while(R2<=2)	do
+	base=PAGE_TABLE_BASE+(R2*300);
+	if(R2==2)	then
+		base=PAGE_TABLE_BASE+280;
+	endif;
+	index=0;
+	while(index<20)	do
+		R3=base+index;
+		R4=R3+1;
+		if(index==0)	then
+			[R3]=63;
+			[R4]="0100";
+		endif;
+		if(index==2)	then
+			[R3]=64;
+			[R4]="0100";
+		endif;
+		if((index==4)||(index==6))	then
+			[R3]=-1;
+			[R4]="0000";
+		endif;
+		if(index==8)	then
+			[R3]=69;
+			[R4]="0100";
+		endif;
+		if((index==10)||(index==12)||(index==14))	then
+			[R3]=-1;
+			[R4]="0000";
+		endif;
+		if(index==16)	then
+			[R4]="0110";
+			if(R2==0)	then
+				[R3]=70;
+			endif;
+			if(R2==1)	then
+				[R3]=81;
+			endif;
+			if(R2==2)	then
+				[R3]=83;
+			endif;
+		endif;
+		if(index==18)	then
+			[R3]=-1;
+			[R4]="0000";
+		endif;
+		index=index+2;
+	endwhile;
+	R2=R2+1;
+endwhile;
+R2=0;
+while(R2<=2)	do
+	base=PROCESS_TABLE+(R2*240);
+	if(R2==0)	then
+		[base+1]=0;
+		[base+4]=RUNNING;
+		[base+11]=76;
+		[base+14]=PAGE_TABLE_BASE;
+		[35840]=[35329];
+	endif;
+	if(R2==1)	then
+		[base+1]=15;
+		[base+4]=CREATED;
+		[base+11]=82;
+		[base+14]=PAGE_TABLE_BASE+300;
+		[41472]=[35329];
+	endif;
+	if(R2==2)	then
+		base=PROCESS_TABLE+224;
+		[base+1]=14;
+		[base+4]=RUNNING;
+		[base+11]=84;
+		[base+14]=PAGE_TABLE_BASE+280;
+	endif;
+	[base+3]=0;
+	[base+9]=0;
+	[base+12]=0;
+	[base+13]=4096;
+	[base+15]=10;
+	R2=R2+1;
+endwhile;
+SP=(76*512)-1;
+
+call MOD_7;
+
+[KERN_LOCK]=0;
+[SCHED_LOCK]=0;
+start;
+
+PTBR=PAGE_TABLE_BASE;
+PTLR=10;
+[SYSTEM_STATUS_TABLE+1]=0;
+SP=4096;
+ireturn;

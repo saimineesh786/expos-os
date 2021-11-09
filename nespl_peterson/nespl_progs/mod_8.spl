@@ -1,0 +1,49 @@
+alias funct_num R1;
+
+if(funct_num==1)	then
+	if(CORE==1)	then
+		if(([SYSTEM_STATUS_TABLE+5]!=0)||([SYSTEM_STATUS_TABLE+7]==1))	then
+			[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+6]*16)+4]=READY;
+			[PROCESS_TABLE+([SYSTEM_STATUS_TABLE+6]*16)+5]="";
+			
+			
+			multipush(R1);
+			call MOD_5;
+			multipop(R1);
+			
+		endif;
+	endif;
+	[29576+(CORE*3)]=1;
+	[29580]=(CORE+1)%2;
+	while(([29576+(((CORE+1)%2)*3)]==1)&&([29580]==((CORE+1)%2)))	do
+		continue;
+	endwhile;
+	return;
+endif;
+
+if(funct_num==2)	then
+	[29577+(CORE*4)]=1;
+	[29582]=(CORE+1)%2;
+	while(([29577+(((CORE+1)%2)*4)]==1)&&([29582]==((CORE+1)%2)))	do
+		continue;
+	endwhile;
+	return;
+endif;
+
+if(funct_num==3)	then
+	while(tsl(GLOCK)==1)	do
+		continue;
+	endwhile;
+	return;
+endif;	
+
+if(funct_num==4)	then
+	[29576+(CORE*3)]=0;
+	return;
+endif;
+
+if(funct_num==5)	then
+	[29577+(CORE*4)]=0;
+	return;
+endif;
+return;	

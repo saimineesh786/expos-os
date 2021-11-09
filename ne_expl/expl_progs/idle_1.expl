@@ -1,0 +1,24 @@
+int main()
+{
+    decl
+        int a;
+        int b;
+        int rt;
+        str fname;
+    enddecl
+    begin
+
+        a=101;
+        while(a<=200)   do
+            b=exposcall("Write",-2,a);
+            a=a+1;
+        endwhile;
+        rt = exposcall("write",-2,"id-fname");
+        rt = exposcall("Read",-1,fname);
+        rt = exposcall("Exec",fname);
+        while(1==1) do
+            a=1;
+        endwhile;
+        return 0;
+    end
+}
